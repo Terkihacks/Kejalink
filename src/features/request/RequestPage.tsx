@@ -74,7 +74,7 @@ export function RequestPage() {
   const [houseType,     setHouseType]     = useState('')
   const [moveTimeline,  setMoveTimeline]  = useState('')
   const [phone,         setPhone]         = useState('')
-  const [name,          setName]          = useState('')
+
   const isSubmitting = submitRequest.isPending
 
   // useTransition: marks step changes as non-urgent so React can keep
