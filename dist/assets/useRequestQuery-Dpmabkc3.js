@@ -1,0 +1,2 @@
+import{u as s,b as t}from"./query-C19bfhOR.js";import{b as a,g as n,d as r}from"./index-pSsC92O6.js";function c(){return s({mutationFn:e=>a(e)})}function m(e){return t({queryKey:["request",e],queryFn:()=>n(e),enabled:!!e,refetchInterval:5e3,staleTime:4e3,gcTime:120*1e3})}function f(e){return t({queryKey:["notifications",e],queryFn:()=>r(),enabled:!!e,refetchInterval:8e3,staleTime:7e3,gcTime:120*1e3,placeholderData:u=>u})}export{m as a,f as b,c as u};
+//# sourceMappingURL=useRequestQuery-Dpmabkc3.js.map

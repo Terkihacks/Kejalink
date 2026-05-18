@@ -1,0 +1,60 @@
+<!-- KejaLink · Primary Logo · Dark Background -->
+<!-- Use: website nav, dark app shells, dark marketing materials -->
+<!-- Min width: 120px · Safe area: 8px padding all sides -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 204 48" role="img" aria-label="KejaLink — Verified Rentals">
+  <title>KejaLink</title>
+  <defs>
+    <!-- Interlock clip: show left ring on TOP at the bottom half of overlap -->
+    <clipPath id="p-left-top">
+      <rect x="0" y="0" width="48" height="35"/>
+    </clipPath>
+    <clipPath id="p-left-bot">
+      <rect x="0" y="35" width="48" height="13"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── ICON MARK ── -->
+  <g id="icon-mark">
+    <!-- House body -->
+    <path d="M24 3L2 20H7V45H41V20H46L24 3Z" fill="#00C853"/>
+
+    <!-- Door background (dark cutout) -->
+    <rect x="15" y="27" width="18" height="18" rx="1.5" fill="#0A0F1E"/>
+
+    <!-- Chain link rings — interlock effect -->
+    <!-- Step 1: Draw right ring fully (goes BEHIND left ring at bottom) -->
+    <circle cx="30" cy="36" r="7" fill="none" stroke="#00C853" stroke-width="2.2"/>
+
+    <!-- Step 2: Cover bottom of right ring in overlap zone (left goes over it) -->
+    <rect x="23" y="36" width="8" height="8" fill="#0A0F1E"/>
+
+    <!-- Step 3: Draw left ring fully -->
+    <circle cx="18" cy="36" r="7" fill="none" stroke="#00C853" stroke-width="2.2"/>
+
+    <!-- Step 4: Cover top of left ring in overlap zone (right goes over it) -->
+    <rect x="23" y="28" width="8" height="8" fill="#0A0F1E"/>
+
+    <!-- Step 5: Redraw right ring TOP arc (appears in front of left ring at top) -->
+    <path d="M23,28.5 A7,7,0,0,1,23,43.5" fill="none" stroke="#00C853" stroke-width="2.2"/>
+
+    <!-- Node dot at roof peak -->
+    <circle cx="24" cy="3" r="2.8" fill="#00E5FF"/>
+    <circle cx="24" cy="3" r="1.4" fill="#FFFFFF"/>
+  </g>
+
+  <!-- ── WORDMARK ── -->
+  <g id="wordmark" transform="translate(54, 0)">
+    <!-- "Keja" white -->
+    <text x="0" y="31"
+      font-family="'Arial Black','Helvetica Neue',Arial,sans-serif"
+      font-size="27" font-weight="900" fill="#FFFFFF" letter-spacing="-0.5">Keja</text>
+    <!-- "Link" green -->
+    <text x="66" y="31"
+      font-family="'Arial Black','Helvetica Neue',Arial,sans-serif"
+      font-size="27" font-weight="900" fill="#00C853" letter-spacing="-0.5">Link</text>
+    <!-- Tagline -->
+    <text x="1" y="44"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="8" font-weight="400" fill="#4B5563" letter-spacing="2.2">VERIFIED RENTALS · KENYA</text>
+  </g>
+</svg>

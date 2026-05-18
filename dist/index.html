@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Kenya's verified rental marketplace. Tell us what you need and we'll match you with trusted agents. No fake listings. Fast matching."
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      Typography:
+        Plus Jakarta Sans — display headings, brand wordmark, hero copy
+        Inter            — body text, UI labels, form inputs, badges
+      Both loaded from Google Fonts. For a fully offline build, replace with @font-face declarations.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>KejaLink — Find a House Without Stress</title>
+
+    <!--
+      Theme flash prevention: apply the saved theme class before React renders
+      so the user never sees a flash of the wrong theme on page load.
+    -->
+    <script>
+      (function () {
+        var s = localStorage.getItem('keja-theme')
+        var preferLight = window.matchMedia('(prefers-color-scheme: light)').matches
+        if (s === 'light' || (!s && preferLight)) {
+          document.documentElement.classList.add('light')
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="/assets/index-pSsC92O6.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/router-QOPz9NBM.js">
+    <link rel="modulepreload" crossorigin href="/assets/query-C19bfhOR.js">
+    <link rel="modulepreload" crossorigin href="/assets/icons-BjniDGsG.js">
+    <link rel="modulepreload" crossorigin href="/assets/motion-9s4Bgb1S.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-gOwMcjps.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

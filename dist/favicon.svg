@@ -1,0 +1,21 @@
+<!-- KejaLink · Favicon (SVG) -->
+<!-- Use: browser tab, bookmarks, PWA -->
+<!-- Add to HTML: <link rel="icon" type="image/svg+xml" href="/favicon.svg"> -->
+<!-- Simplified mark — readable at 16px and 32px -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="KejaLink">
+  <title>KL</title>
+
+  <!-- Dark background square -->
+  <rect width="32" height="32" rx="6" fill="#0A0F1E"/>
+
+  <!-- House — bold, simplified for 16–32px -->
+  <path d="M16 3L2 13H5V29H27V13H30L16 3Z" fill="#00C853"/>
+
+  <!-- Door — simplified two-dot link (readable at 16px) -->
+  <rect x="10" y="18" width="12" height="11" fill="#0A0F1E"/>
+  <circle cx="13" cy="23" r="3.5" fill="none" stroke="#00C853" stroke-width="1.8"/>
+  <circle cx="19" cy="23" r="3.5" fill="none" stroke="#00C853" stroke-width="1.8"/>
+
+  <!-- Peak node -->
+  <circle cx="16" cy="3" r="2" fill="#00E5FF"/>
+</svg>

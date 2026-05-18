@@ -1,0 +1,54 @@
+<!-- KejaLink · App Icon (Rounded Square) -->
+<!-- Use: iOS App Store, Google Play, PWA manifest, desktop shortcut -->
+<!-- Export at: 1024×1024 PNG for App Store, 512×512 for Play Store -->
+<!-- Render this SVG at target size, then export as PNG -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="KejaLink app icon">
+  <title>KejaLink</title>
+  <defs>
+    <!-- iOS-style rounded square clip -->
+    <clipPath id="app-clip">
+      <rect width="1024" height="1024" rx="230" ry="230"/>
+    </clipPath>
+    <!-- Subtle inner shadow gradient -->
+    <radialGradient id="bg-glow" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#0D2035"/>
+      <stop offset="100%" stop-color="#0A0F1E"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="230" fill="url(#bg-glow)" clip-path="url(#app-clip)"/>
+
+  <!-- Subtle grid lines (very faint) -->
+  <g clip-path="url(#app-clip)" opacity="0.04">
+    <line x1="0" y1="256" x2="1024" y2="256" stroke="#00C853" stroke-width="1"/>
+    <line x1="0" y1="512" x2="1024" y2="512" stroke="#00C853" stroke-width="1"/>
+    <line x1="0" y1="768" x2="1024" y2="768" stroke="#00C853" stroke-width="1"/>
+    <line x1="256" y1="0" x2="256" y2="1024" stroke="#00C853" stroke-width="1"/>
+    <line x1="512" y1="0" x2="512" y2="1024" stroke="#00C853" stroke-width="1"/>
+    <line x1="768" y1="0" x2="768" y2="1024" stroke="#00C853" stroke-width="1"/>
+  </g>
+
+  <!-- Icon centred in 1024×1024, drawn at 600×600 scale, offset 212,140 -->
+  <g transform="translate(212, 120) scale(12.5)">
+    <!-- House body -->
+    <path d="M24 2L1 20H6.5V46H41.5V20H47L24 2Z" fill="#00C853"/>
+
+    <!-- Door background -->
+    <rect x="14.5" y="27" width="19" height="19" rx="2" fill="#0A0F1E"/>
+
+    <!-- Chain link rings — interlock -->
+    <circle cx="30.5" cy="36.5" r="7.5" fill="none" stroke="#00C853" stroke-width="2.5"/>
+    <rect x="23" y="36.5" width="8.5" height="8" fill="#0A0F1E"/>
+    <circle cx="17.5" cy="36.5" r="7.5" fill="none" stroke="#00C853" stroke-width="2.5"/>
+    <rect x="23" y="28.5" width="8.5" height="8" fill="#0A0F1E"/>
+    <path d="M23,28.7 A7.5,7.5,0,0,1,23,44.3" fill="none" stroke="#00C853" stroke-width="2.5"/>
+
+    <!-- Roof peak node -->
+    <circle cx="24" cy="2" r="3" fill="#00E5FF"/>
+    <circle cx="24" cy="2" r="1.5" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Subtle bottom glow -->
+  <ellipse cx="512" cy="900" rx="300" ry="80" fill="#00C853" opacity="0.06" clip-path="url(#app-clip)"/>
+</svg>

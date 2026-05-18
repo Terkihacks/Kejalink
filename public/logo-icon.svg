@@ -1,0 +1,32 @@
+<!-- KejaLink · Icon Mark Only (Transparent Background) -->
+<!-- Use: standalone brandmark, social media profile images (pair with coloured bg) -->
+<!-- Sizes: render at 32px, 64px, 128px, 256px, 512px -->
+<!-- For app icon: use logo-icon-app.svg which has the rounded-square background -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="KejaLink icon">
+  <title>KejaLink</title>
+
+  <!-- House body — filled green -->
+  <path d="M24 2L1 20H6.5V46H41.5V20H47L24 2Z" fill="#00C853"/>
+
+  <!-- Door background -->
+  <rect x="14.5" y="27" width="19" height="19" rx="2" fill="#0A0F1E"/>
+
+  <!-- Chain link rings — interlock -->
+  <!-- Right ring (drawn first — behind at bottom) -->
+  <circle cx="30.5" cy="36.5" r="7.5" fill="none" stroke="#00C853" stroke-width="2.5"/>
+  <!-- Mask: left ring goes over right ring at the bottom -->
+  <rect x="23" y="36.5" width="8.5" height="8" fill="#0A0F1E"/>
+  <!-- Left ring (full) -->
+  <circle cx="17.5" cy="36.5" r="7.5" fill="none" stroke="#00C853" stroke-width="2.5"/>
+  <!-- Mask: right ring goes over left ring at the top -->
+  <rect x="23" y="28.5" width="8.5" height="8" fill="#0A0F1E"/>
+  <!-- Right ring top arc redrawn in front -->
+  <path d="M23,28.7 A7.5,7.5,0,0,1,23,44.3" fill="none" stroke="#00C853" stroke-width="2.5"/>
+
+  <!-- Roof peak node — signals digital/connected -->
+  <circle cx="24" cy="2" r="3" fill="#00E5FF"/>
+  <circle cx="24" cy="2" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Eave highlight -->
+  <path d="M24 2L1 20H47L24 2Z" fill="none" stroke="#00B248" stroke-width="0.8" stroke-linejoin="round"/>
+</svg>
