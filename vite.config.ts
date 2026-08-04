@@ -23,6 +23,18 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  server: {
+    // Proxies /api/* to the local backend so browser requests are same-origin —
+    // the backend has no CORS headers configured, so a direct cross-origin
+    // fetch fails with "Failed to fetch" on every mutation.
+    proxy: {
+      '/api': {
+        target:       'http://localhost:4000',
+        changeOrigin: true,
+        rewrite:      (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
   build: {
     target:    'esnext',
     sourcemap: true,

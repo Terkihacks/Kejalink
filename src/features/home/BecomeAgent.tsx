@@ -1,5 +1,6 @@
 import { MessageSquare, Timer, DollarSign, ArrowRight, type LucideIcon } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
 interface Benefit {
@@ -52,6 +53,7 @@ const BENEFITS: Benefit[] = [
  */
 export function BecomeAgent() {
   const reduced = useReducedMotion()
+  const navigate = useNavigate()
 
   return (
     <section id="agents" className="relative bg-card px-4 py-20 md:py-28">
@@ -123,6 +125,7 @@ export function BecomeAgent() {
         >
           <button
             type="button"
+            onClick={() => navigate('/agent/login')}
             className="group inline-flex items-center gap-2.5 rounded-full bg-gold px-10 py-4 text-base font-semibold text-background shadow-[0_0_30px_rgba(245,166,35,0.3)] transition-all hover:bg-gold/90 hover:shadow-[0_0_50px_rgba(245,166,35,0.45)]"
           >
             Become a Verified Agent

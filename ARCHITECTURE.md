@@ -45,24 +45,42 @@ Kenya's verified rental marketplace. Connects renters with pre-vetted agents in 
 
 ```
 src/
-├── App.tsx                   # Route tree — lazy loads request/status pages
+├── App.tsx                   # Route tree — lazy loads request/status/agent/admin pages
 ├── main.tsx                  # Entry point — mounts QueryClientProvider + BrowserRouter
 ├── vite-env.d.ts             # Vite import.meta.env type reference
 │
 ├── types/
-│   └── index.ts              # Shared domain types (form data, API shapes)
+│   └── index.ts              # Cross-feature domain types (request/result/match shapes)
 │
 ├── lib/
-│   ├── api.ts                # Typed fetch wrapper + ApiError class + isMockMode flag
+│   ├── api.ts                # Typed fetch wrapper — envelope unwrap, bearer auth, 401 refresh-retry
+│   ├── auth-storage.ts       # Per-role session persistence (renter/agent/admin), localStorage
+│   ├── error-messages.ts     # ERROR_MESSAGES code table + getErrorMessage()
+│   ├── magic-link.ts         # extractMagicLinkToken() — parses /results/:token from a magicLink URL
+│   ├── constants.ts          # AREAS — shared between the request form and agent apply form
 │   └── utils.ts              # cn() — clsx + tailwind-merge
 │
 ├── services/
-│   └── requests.ts           # submitRequest · getRequest · getNotifications
-│                             # Automatic mock fallback when VITE_API_BASE_URL is unset
+│   ├── requests.ts           # createRequest — POST /requests (authenticated renter)
+│   ├── results.ts            # getResultsByToken — GET /results/:token (public magic link)
+│   ├── renterAuth.ts         # request-otp / verify-otp / logout for RENTER
+│   ├── agentAuth.ts          # request-otp / verify-otp (+ hasProfile) / logout for AGENT
+│   ├── agents.ts             # agent profile (apply/me/patch) + leads (list/accept/decline)
+│   ├── adminAuth.ts          # login / verify-2fa / setup-2fa / disable-2fa for ADMIN
+│   └── admin.ts              # agents (list/get/suspend/unsuspend), appeals, verifications
+│                             # Every function ships an `if (isMockMode)` branch — the app
+│                             # stays fully demoable without a backend running.
 │
 ├── hooks/
 │   ├── index.ts              # Barrel re-exports
-│   ├── useRequestQuery.ts    # TanStack Query hooks (submit, status, notifications)
+│   ├── useAuthSession.ts     # Reads a stored session, reacts to login/logout events
+│   ├── useRequestQuery.ts    # useCreateRequest
+│   ├── useResultsQuery.ts    # useRequestResults — polls GET /results/:token every 5s
+│   ├── useRenterAuth.ts      # useRequestRenterOtp / useVerifyRenterOtp
+│   ├── useAgentAuth.ts       # useRequestAgentOtp / useVerifyAgentOtp
+│   ├── useAgentQuery.ts      # profile, apply/update, leads (poll 15s), accept/decline
+│   ├── useAdminAuth.ts       # useAdminLogin / useVerifyAdmin2fa
+│   ├── useAdminQuery.ts      # agents, suspend/unsuspend, appeals, verifications
 │   ├── useTheme.ts           # Dark/light toggle + localStorage persistence
 │   ├── useScrolled.ts        # Passive scroll listener — returns bool past threshold
 │   └── useIsMobile.ts        # matchMedia listener — returns bool below 768 px
@@ -77,20 +95,41 @@ src/
 │   │   ├── Hero.tsx          # Headline + CTAs + trust signals
 │   │   ├── HowItWorks.tsx    # 3-step process cards
 │   │   ├── TrustSection.tsx  # 4 social-proof stat cards
-│   │   ├── BecomeAgent.tsx   # Agent signup section
+│   │   ├── BecomeAgent.tsx   # Agent signup section — CTA routes to /agent/login
 │   │   └── FAQ.tsx           # Accordion FAQ
 │   │
 │   ├── request/
 │   │   ├── index.ts          # Barrel
-│   │   ├── RequestPage.tsx   # 5-step multi-screen form
-│   │   └── constants.ts      # AREAS, HOUSE_TYPES, MOVE_TIMELINES, budget bounds
+│   │   ├── RequestPage.tsx   # 5-step form; step 5 does inline phone→OTP→submit
+│   │   └── constants.ts      # HOUSE_TYPES, BEDROOMS_BY_HOUSE_TYPE, MOVE_TIMELINES, budget bounds
 │   │
-│   └── status/
+│   ├── status/
+│   │   ├── index.ts          # Barrel
+│   │   └── StatusPage.tsx    # Public /results/:token — matches feed, polls every 5s
+│   │
+│   ├── agent/
+│   │   ├── index.ts          # Barrel
+│   │   ├── AgentLayout.tsx   # Slim internal-tool shell (logo + name + logout)
+│   │   ├── AgentLoginPage.tsx     # Phone/OTP → routes to apply or dashboard
+│   │   ├── AgentApplyPage.tsx     # One-time profile submission
+│   │   ├── AgentDashboardPage.tsx # Leads list, accept/decline
+│   │   ├── types.ts          # AgentProfile, AgentLead, VerificationStatus, etc.
+│   │   └── constants.ts      # PROPERTY_TYPES (no backend enum — curated list)
+│   │
+│   └── admin/
 │       ├── index.ts          # Barrel
-│       └── StatusPage.tsx    # Live request tracking — polls API every 5 / 8 s
+│       ├── AdminLayout.tsx           # Internal shell with nav tabs
+│       ├── AdminLoginPage.tsx        # Email/password → TOTP two-phase
+│       ├── VerificationsQueuePage.tsx
+│       ├── VerificationDetailPage.tsx # Approve checklist / reject-with-reason
+│       ├── AdminAgentsListPage.tsx    # Search/filter
+│       ├── AdminAgentDetailPage.tsx   # Suspend/unsuspend + history
+│       ├── AdminAppealsPage.tsx      # Escalate (ADMIN) / resolve (SUPER_ADMIN only)
+│       └── types.ts
 │
 └── components/
     ├── Logo.tsx              # KejaLinkIcon · KejaLinkWordmark SVG components
+    ├── RequireAuth.tsx       # Route guard — session presence/role check, redirects to login
     ├── layout/
     │   ├── index.ts
     │   ├── Navbar.tsx        # Sticky header, scroll-aware, mobile drawer
@@ -112,20 +151,54 @@ src/
 ### Route Map
 
 ```
-/                  → HomePage      (inside RootLayout — has Navbar + Footer)
-/request           → RequestPage   (lazy, own sticky header)
-/request/status    → StatusPage    (lazy, own sticky header)
+/                         → HomePage                (RootLayout — Navbar + Footer)
+/request                  → RequestPage              (lazy, own sticky header)
+/results/:token           → StatusPage               (lazy, own header, PUBLIC magic link)
+
+/agent/login              → AgentLoginPage           (lazy, own header, unauthenticated)
+/agent/apply              → AgentApplyPage            (lazy, AgentLayout, guarded: agent)
+/agent/dashboard          → AgentDashboardPage        (lazy, AgentLayout, guarded: agent)
+
+/admin/login              → AdminLoginPage            (lazy, own header, unauthenticated)
+/admin/verifications      → VerificationsQueuePage    (lazy, AdminLayout, guarded: admin)
+/admin/verifications/:id  → VerificationDetailPage    (lazy, AdminLayout, guarded: admin)
+/admin/agents             → AdminAgentsListPage       (lazy, AdminLayout, guarded: admin)
+/admin/agents/:id         → AdminAgentDetailPage      (lazy, AdminLayout, guarded: admin)
+/admin/appeals            → AdminAppealsPage          (lazy, AdminLayout, guarded: admin;
+                                                        resolve action further gated to SUPER_ADMIN)
 ```
 
-### RootLayout
+`/request/status` (the old mock-era route) no longer exists — the status
+page is reached only via the `magicLink` token returned by `POST /requests`.
 
-`Navbar` + `<Outlet />` + `Footer`. Only the home page uses this shell.
-`RequestPage` and `StatusPage` render their own sticky progress/status headers
-so they are mounted outside `RootLayout`.
+### RootLayout vs. feature-owned shells
+
+`RootLayout` (`Navbar` + `<Outlet />` + `Footer`) is used only by the home
+page. `RequestPage`/`StatusPage` render their own sticky progress/status
+headers. `AgentLayout`/`AdminLayout` are separate internal-tool shells (logo
++ session-aware name/logout, no public Navbar/Footer) — these are workspaces
+for authenticated agents/admins, not marketing pages.
+
+### Route Guards
+
+`src/components/RequireAuth.tsx` wraps every `/agent/*` and `/admin/*` route
+(except the login pages themselves):
+
+```tsx
+<RequireAuth kind="agent" roles={['AGENT']}>
+  <AgentDashboardPage />
+</RequireAuth>
+```
+
+It only checks whether a session is *present* (and matches an optional
+`roles` allow-list) — it does not decode or check JWT expiry client-side.
+Expiry is handled transparently by `api.ts`'s refresh-and-retry (see §4);
+if a refresh ultimately fails, the session is cleared and the next guarded
+navigation redirects to `/${kind}/login`.
 
 ### Lazy Loading
 
-`RequestPage` and `StatusPage` are `React.lazy()`-wrapped in `App.tsx`.
+Every route past the home page is `React.lazy()`-wrapped in `App.tsx`.
 Their JS chunks are only downloaded when the user navigates to those routes.
 The initial page load only pulls the home page code.
 
@@ -144,12 +217,11 @@ so any lazy chunk shows a branded three-dot bounce loader while loading.
 
 ### Error Boundaries
 
-Two `<ErrorBoundary>` instances are in place:
-
-1. **Root** — wraps the entire `<Suspense>` tree. Catches any catastrophic
-   render failure across the whole app.
-2. **Per-route** — wraps `<RequestPage>` and `<StatusPage>` individually.
-   A crash on `/request/status` cannot take down the home page.
+An `<ErrorBoundary>` wraps the entire `<Suspense>` tree (catches any
+catastrophic render failure across the whole app), plus one per top-level
+route/layout group (`RequestPage`, `StatusPage`, `AgentLayout`,
+`AdminLayout`, and the two standalone login pages) so a crash in one
+section can't take down the rest of the app.
 
 ---
 
@@ -159,130 +231,133 @@ Two `<ErrorBoundary>` instances are in place:
 
 ```
 Component
-  └── Hook (useSubmitRequest / useRequestStatus / useNotifications)
-        └── Service (src/services/requests.ts)
+  └── Hook (useCreateRequest / useRequestResults / useAgentLeads / ...)
+        └── Service (src/services/*.ts)
               └── API client (src/lib/api.ts)
-                    └── fetch() → VITE_API_BASE_URL/api/...
+                    └── fetch() → VITE_API_BASE_URL/...
 ```
+
+### Response Envelope
+
+The real backend wraps every response (except `/health`, which is flat):
+
+```json
+// success
+{ "success": true, "data": { /* endpoint-specific payload */ } }
+
+// error
+{ "success": false, "code": "SOME_ERROR_CODE", "message": "...", "statusCode": 400 }
+```
+
+`message` is a string for domain errors, or an array of strings for
+class-validator request-validation errors.
 
 ### `src/lib/api.ts` — Fetch Wrapper
 
-A thin typed wrapper around `fetch`. All calls go through here.
+All calls go through here. Same call-site shape as before, plus an optional
+trailing `auth` argument naming which stored session to attach:
 
 ```ts
 export const api = {
-  get:    <T>(path) => request<T>(path),
-  post:   <T>(path, body) => request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
-  patch:  <T>(path, body) => request<T>(path, { method: 'PATCH', ... }),
-  delete: <T>(path) => request<T>(path, { method: 'DELETE' }),
+  get:    <T>(path, auth?: SessionKind) => request<T>(path, { auth }),
+  post:   <T>(path, body, auth?: SessionKind) => request<T>(path, { method: 'POST',  body: JSON.stringify(body), auth }),
+  patch:  <T>(path, body, auth?: SessionKind) => request<T>(path, { method: 'PATCH', body: JSON.stringify(body), auth }),
+  delete: <T>(path, auth?: SessionKind) => request<T>(path, { method: 'DELETE', auth }),
+  health: () => request<{ status; timestamp; checks }>('/health'),
 }
 ```
 
-Non-2xx responses throw `ApiError(status, message, code?)`. Components can
-catch this type to distinguish HTTP errors from network errors.
+Internally, `request<T>`:
+- Attaches `Authorization: Bearer <accessToken>` when `auth` is given and a
+  session exists for that kind (see `auth-storage.ts` below).
+- Unwraps `{ success: true, data }` → returns `data` directly. On
+  `{ success: false, ... }` (or non-2xx), joins array `message`s and throws
+  the existing `ApiError(status, message, code?)` — call sites are
+  unaffected by the envelope change.
+- On a `401` with `auth` set (and not already retried): calls
+  `POST /auth/${auth}/refresh` with the stored `refreshToken`, updates the
+  session on success, and retries the original request **once**. If refresh
+  fails, clears the session and throws — the next guarded navigation
+  (`RequireAuth`) redirects to that role's login.
+- `/health` is special-cased to skip envelope unwrapping (it returns a flat
+  body for uptime/infra tooling).
 
-`isMockMode` is `true` when `VITE_API_BASE_URL` is not set in the environment.
+`isMockMode` is `true` when `VITE_API_BASE_URL` is not set. **Every service
+function below ships its own `if (isMockMode)` branch that bypasses
+`api.ts` entirely** — the app stays fully demoable without a backend.
 
-### `src/services/requests.ts` — Service Layer
+### `src/lib/auth-storage.ts` — Session Persistence
 
-Three functions, each with a **real path** and a **mock fallback**:
+One localStorage key per session kind — `keja-auth-renter`,
+`keja-auth-agent`, `keja-auth-admin` — so a renter/agent/admin session can
+coexist in the same browser (useful across dev tabs). Mirrors the
+lazy-`useState` + write-on-change pattern `useTheme` already uses, applied
+to a JSON blob:
 
-| Function | Real endpoint | Mock behaviour |
+```ts
+export function getSession(kind: SessionKind): AuthSession | null
+export function setSession(kind: SessionKind, session: AuthSession): void   // dispatches 'keja-auth-change'
+export function clearSession(kind: SessionKind): void                       // dispatches 'keja-auth-change'
+```
+
+No JWT decoding happens client-side — `verify-otp`/`verify-2fa` responses
+already include `user.role`, which is stored directly. `useAuthSession(kind)`
+wraps `getSession` in state and re-renders on the `keja-auth-change` event.
+
+### Service Layer
+
+| File | Endpoints | Notes |
 |---|---|---|
-| `submitRequest(input)` | `POST /api/requests` | Returns a seeded record after a 2 s delay |
-| `getRequest(id)` | `GET /api/requests/:id` | Simulates `agentsReviewing` growing based on elapsed time |
-| `getNotifications(id)` | `GET /api/requests/:id/notifications` | Drip-feeds 3 notifications at 6 s / 12 s / 18 s |
+| `renterAuth.ts` | `POST /auth/renter/{request-otp,verify-otp,logout}` | Mock: code `123456` always verifies |
+| `requests.ts` | `POST /requests` | Requires renter auth; phone comes from the JWT, not the body |
+| `results.ts` | `GET /results/:token` | Public — no `auth` kind passed |
+| `agentAuth.ts` | `POST /auth/agent/{request-otp,verify-otp,logout}` | `verify-otp` also returns `hasProfile`; logout has **no** header fallback (body-only) |
+| `agents.ts` | `POST /agents/apply`, `PATCH /agents/me`, `GET /agents/me`, `GET /agents/leads`, `POST /agents/leads/:id/{accept,decline}` | `getMyAgentProfile()` catches a `404` and returns `null` instead of throwing |
+| `adminAuth.ts` | `POST /auth/admin/{login,verify-2fa,setup-2fa,disable-2fa}` | Two-step login; `otpCode` bootstrap hint only appears pre-2FA-setup |
+| `admin.ts` | `GET/POST /admin/agents/*`, `/admin/appeals/*`, `/admin/verifications/*` | List endpoints take query params via a small `query()` helper |
 
-The mock fallback runs automatically when `isMockMode === true` — no code
-changes needed to switch between mock and real backend. Set
-`VITE_API_BASE_URL` in `.env.local` to activate the real API.
+### API Contract (selected — see the companion API reference for full detail)
 
-### `src/hooks/useRequestQuery.ts` — TanStack Query Hooks
+#### `POST /requests` (🔒 renter)
+```json
+// request
+{ "area": "Kilimani", "budgetMin": 15000, "budgetMax": 30000, "bedrooms": 1, "timeline": "ASAP" }
 
+// response (201)
+{ "requestId": "uuid", "status": "MATCHED", "magicLink": "http://host/results/<token>", "matchedAgentCount": 2 }
 ```
-useSubmitRequest()         — mutation, no polling
-useRequestStatus(id)       — query, refetchInterval: 5 000 ms, staleTime: 4 000 ms
-useNotifications(id)       — query, refetchInterval: 8 000 ms, staleTime: 7 000 ms
-```
 
-**`staleTime` is set just under `refetchInterval`** to prevent a double-fetch
-when React StrictMode double-invokes effects. Data is considered fresh until
-1 s before the next scheduled poll.
-
-**`gcTime: 2 min`** means cached data survives for 2 minutes after the
-component unmounts. A back-navigation to `/request/status` restores instantly
-from cache rather than showing a skeleton.
-
-### API Contract (backend must implement)
-
-#### `POST /api/requests`
-
-Request body (`HouseRequestInput`):
+#### `GET /results/:token` (public)
 ```json
 {
-  "areas":        ["Kilimani", "Westlands"],
-  "maxBudget":    25000,
-  "houseType":    "1br",
-  "moveTimeline": "this-month",
-  "phone":        "+254712345678"
+  "id": "uuid", "area": "Kilimani", "budgetMin": 15000, "budgetMax": 30000, "bedrooms": 1,
+  "timeline": "ASAP", "status": "MATCHED", "matchedAgentCount": 2,
+  "expiresAt": "...", "createdAt": "...",
+  "matches": [
+    { "id": "matchId", "rank": 1, "status": "NOTIFIED",
+      "agent": { "id": "uuid", "name": "Jane Mwangi", "phone": "254711111111", "bio": "...", "serviceAreas": [...], "propertyTypes": [...] } }
+  ]
 }
 ```
-
-Response (`RequestRecord`):
-```json
-{
-  "id":                "req_abc123",
-  "status":            "pending",
-  "areas":             ["Kilimani"],
-  "maxBudget":         25000,
-  "houseType":         "1br",
-  "houseTypeLabel":    "1 Bedroom",
-  "moveTimeline":      "this-month",
-  "moveTimelineLabel": "This Month",
-  "phone":             "+254712345678",
-  "agentsReviewing":   0,
-  "createdAt":         "2026-03-23T10:00:00Z"
-}
-```
-
-#### `GET /api/requests/:id`
-
-Same `RequestRecord` shape, with `agentsReviewing` updated in real time.
-
-#### `GET /api/requests/:id/notifications`
-
-Array of `AgentNotification`:
-```json
-[
-  {
-    "id":      1,
-    "type":    "agent_accepted",
-    "title":   "Agent John accepted your request",
-    "message": "...",
-    "time":    "2 min ago",
-    "avatar":  "J",
-    "isNew":   true
-  }
-]
-```
-
-`type` must be one of: `agent_accepted` | `house_found` | `viewing_scheduled`
+`status`: `MATCHED` | `PENDING_SUPPLY`. Errors: `401 MAGIC_LINK_INVALID`, `410 MAGIC_LINK_REVOKED`.
+Match `status`: `NOTIFIED` | `ACCEPTED` | `DECLINED` | `EXPIRED` — agent phone is visible immediately, before acceptance.
 
 ### Data Flow — Request Submission
 
 ```
-RequestPage (form state)
+RequestPage (form state, steps 1–4) → step 5 (otpPhase: 'phone' | 'otp')
   │
-  └─ handleNext() on step 5
+  ├─ 'phone' phase: useRequestRenterOtp().mutate(phone) → onSuccess → otpPhase = 'otp'
+  │
+  └─ 'otp' phase: handleVerifyAndSubmit()
         │
-        └─ submitRequest.mutate({ areas, maxBudget, houseType, moveTimeline, phone })
-              │
-              ├── isPending = true  →  loading screen renders
-              │
-              ├── onSuccess(record)
-              │     └─ navigate('/request/status', { state: { requestId: record.id } })
-              │
-              └── isError  →  error banner renders with Retry button
+        ├─ useVerifyRenterOtp().mutateAsync({ phone, code })  →  setSession('renter', ...)
+        │    (skipped if a session already exists — lets a failed createRequest retry
+        │     without re-verifying the OTP)
+        │
+        ├─ useCreateRequest().mutateAsync({ area, budgetMin, budgetMax, bedrooms, timeline })
+        │
+        └─ navigate(`/results/${extractMagicLinkToken(result.magicLink)}`)
 ```
 
 ### Data Flow — Status Page Polling
@@ -290,18 +365,26 @@ RequestPage (form state)
 ```
 StatusPage mounts
   │
-  ├─ reads requestId from useLocation().state
-  │   (passed by RequestPage via React Router state on navigation)
+  ├─ token = useParams().token   (from the magicLink URL, not React Router state —
+  │                                bookmarkable and survives a page refresh)
   │
-  ├─ useRequestStatus(requestId) — polls every 5 s
-  │   └─ requestData.agentsReviewing → live counter + progress bar
-  │
-  └─ useNotifications(requestId) — polls every 8 s
-      └─ notifications[] → agent response cards drip in as array grows
+  └─ useRequestResults(token) — polls GET /results/:token every 5s
+      ├─ status === 'PENDING_SUPPLY' → "no agents in this area yet" empty state
+      ├─ status === 'MATCHED'        → matches[] rendered as MatchCard rows
+      └─ error (401/410)             → "link invalid/closed" + CTA back to /request
 ```
 
-If `requestId` is `undefined` (user navigated directly to `/request/status`),
-the hooks fall back to `'mock-req-001'` which the mock service always resolves.
+### Data Flow — Agent Leads
+
+```
+AgentDashboardPage mounts
+  │
+  ├─ useAgentProfile() → verificationStatus banner if not yet VERIFIED
+  │
+  └─ useAgentLeads() — polls GET /agents/leads every 15s
+      └─ per-lead Accept/Decline → invalidates ['agent-leads'] on success
+         (decline shows the `rematch` message: "next agent notified" or "no agents available")
+```
 
 ---
 
@@ -313,8 +396,9 @@ the hooks fall back to `'mock-req-001'` which the mock service always resolves.
 
 | State type | Where it lives |
 |---|---|
-| Server data (agents, notifications) | TanStack Query cache |
+| Server data (leads, matches, verifications) | TanStack Query cache |
 | Form data (5-step wizard) | `useState` in `RequestPage` |
+| Auth session (renter/agent/admin) | `localStorage` (`auth-storage.ts`) + `useAuthSession` |
 | Theme preference | `useTheme` hook + `localStorage` |
 | Mobile nav open/closed | `useState` in `Navbar` |
 | Scroll position (for nav shadow) | `useScrolled` hook |
@@ -324,15 +408,25 @@ the hooks fall back to `'mock-req-001'` which the mock service always resolves.
 
 ```ts
 step          : 1–5  (which screen is shown)
-selectedAreas : string[]  (multi-select area pills)
-budget        : [number]  (Slider returns single-element array)
-houseType     : string    (id from HOUSE_TYPES constant)
-moveTimeline  : string    (id from MOVE_TIMELINES constant)
+selectedArea  : string    (single-select area pill)
+budgetMin     : [number]  (Slider returns single-element array)
+budgetMax     : [number]
+houseType     : string    (id from HOUSE_TYPES constant, mapped to `bedrooms` at submit time)
+moveTimeline  : string    (id IS the RequestTimeline enum value — no translation needed)
 phone         : string    (digits only, no +254 prefix)
+otpPhase      : 'phone' | 'otp'   (sub-phase of step 5, not a separate step)
+otpCode       : string
 ```
 
 `isValid` (a `useMemo`) is derived from those fields based on the current
-step — it drives the disabled state of the Continue / Submit button.
+step (and, for step 5, the current `otpPhase`) — it drives the disabled
+state of the Continue / Submit button.
+
+Auth session state is intentionally **not** React state — it's read
+lazily from `localStorage` via `useAuthSession(kind)`, which re-renders on
+the `keja-auth-change` event fired by `setSession`/`clearSession`. This
+lets any component (e.g. `AgentLayout`'s top bar) reflect login/logout
+without prop drilling.
 
 ---
 
@@ -518,6 +612,18 @@ Class component (required — hooks cannot catch render errors).
 - Renders a branded recovery UI with a "Try again" reset button
 - Accepts an optional `fallback` render prop for custom error UIs
 
+### `RequireAuth`
+
+```tsx
+<RequireAuth kind="agent" roles={['AGENT']}>
+  <AgentDashboardPage />
+</RequireAuth>
+```
+
+Presence/role gate — `<Navigate to={`/${kind}/login`} replace />` if no
+session exists for `kind`, or if `roles` is given and the session's role
+isn't in it. Does not decode JWT expiry (see `api.ts` in §4).
+
 ---
 
 ## 9. Hooks Reference
@@ -552,28 +658,60 @@ const isMobile = useIsMobile()  // true below 768 px
 Uses `window.matchMedia` — no `resize` polling. Initialises synchronously
 on mount so there is no flash of incorrect layout.
 
-### `useSubmitRequest()`
-
-TanStack Query mutation. Returns `{ mutate, isPending, isError, reset }`.
-Calls `submitRequest()` from the service layer.
-
-### `useRequestStatus(id)`
+### `useAuthSession(kind)`
 
 ```ts
-const { data: requestData } = useRequestStatus(requestId)
+const session = useAuthSession('renter')  // AuthSession | null
 ```
 
-Polls `getRequest(id)` every 5 seconds. `data` is `RequestRecord | undefined`.
-Query is disabled when `id` is falsy.
+Reads the stored session for that kind and re-renders on the
+`keja-auth-change` event (fired by `setSession`/`clearSession` anywhere in
+the app, including other components).
 
-### `useNotifications(id)`
+### `useCreateRequest()`
+
+TanStack Query mutation. Returns `{ mutateAsync, isPending, isError, error }`.
+Calls `createRequest()` — `POST /requests` with the authenticated renter's
+session attached.
+
+### `useRequestRenterOtp()` / `useVerifyRenterOtp()`
+### `useRequestAgentOtp()` / `useVerifyAgentOtp()`
+
+Mutations wrapping the respective `request-otp`/`verify-otp` service calls.
+The agent variant's verify result additionally includes `hasProfile`.
+
+### `useRequestResults(token)`
 
 ```ts
-const { data: notifications = [] } = useNotifications(requestId)
+const { data, error, isLoading } = useRequestResults(token)
 ```
 
-Polls `getNotifications(id)` every 8 seconds. Returns `AgentNotification[]`.
-Uses `placeholderData` to keep the previous array visible between polls.
+Polls `GET /results/:token` every 5 seconds (public — no auth). `data` is
+`RequestResult | undefined`. Disabled when `token` is falsy.
+
+### `useAgentProfile()` / `useApplyAsAgent()` / `useUpdateAgentProfile()`
+
+Profile query + apply/update mutations. `useApplyAsAgent`/
+`useUpdateAgentProfile` write their result straight into the profile query's
+cache on success (`setQueryData`) rather than refetching.
+
+### `useAgentLeads()` / `useAcceptLead()` / `useDeclineLead()`
+
+`useAgentLeads` polls every 15 seconds. Accept/decline mutations invalidate
+the leads query on success so the list reflects the new status immediately.
+
+### `useAdminLogin()` / `useVerifyAdmin2fa()`
+
+Two-step admin login mutations.
+
+### `useAdminAgents(params)` / `useAdminAgent(id)` / `useSuspendAgent()` / `useUnsuspendAgent()`
+### `useAdminAppeals()` / `useEscalateAppeal()` / `useResolveAppeal()`
+### `useVerificationsQueue()` / `useVerificationDetail(agentId)` / `useApproveVerification()` / `useRejectVerification()`
+
+Admin queries/mutations — every mutation invalidates the relevant list
+and/or detail query on success (e.g. approving a verification invalidates
+both the verifications queue and the agents list, since both reflect
+`verificationStatus`).
 
 ---
 
@@ -655,15 +793,16 @@ There is no `postcss.config.mjs`. Do not create one — it will conflict.
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_API_BASE_URL` | No | Base URL of the backend API (e.g. `https://api.kejalink.co.ke`). Omit to run in mock mode. |
+| `VITE_API_BASE_URL` | No | Base URL of the backend API. Local dev: `http://localhost:4000`. Docker: `http://localhost:3000`. Omit to run in mock mode. |
 
 All `VITE_` prefixed variables are inlined at build time by Vite and
 accessible via `import.meta.env.VITE_*`.
 
-**Mock mode** is active when `VITE_API_BASE_URL` is empty or absent.
-All three API functions return realistic fake data with simulated delays
-and a timed notification drip-feed. The UI is fully functional without
-a backend.
+**Mock mode** is active when `VITE_API_BASE_URL` is empty or absent. Every
+service function returns realistic fake data with simulated delays — OTP
+codes accept `123456`, requests get a fake `magicLink`, agent/admin lists
+are seeded with a couple of representative records. The UI is fully
+functional without a backend.
 
 ---
 
@@ -680,16 +819,21 @@ a backend.
 1. Create feature folder: `src/features/my-page/`
 2. Add `lazy(() => import('@/features/my-page')...)` in `App.tsx`
 3. Wrap in `<ErrorBoundary>` in the route element
-4. Add the route inside `<Suspense>` in `App.tsx`
+4. If it needs auth, wrap the element in `<RequireAuth kind="..." roles={[...]}>`
+5. Add the route inside `<Suspense>` in `App.tsx`
 
 ### New API resource
 
-1. Add types to `src/types/index.ts`
+1. Add types — cross-feature shapes go in `src/types/index.ts`; feature-only
+   shapes go in `src/features/<name>/types.ts` (see `agent/types.ts` /
+   `admin/types.ts` for the pattern)
 2. Add service functions to `src/services/` (new file or existing)
    - Always implement a mock branch guarded by `if (isMockMode)`
-3. Add TanStack Query hooks to `src/hooks/useRequestQuery.ts`
+   - Pass the right `auth` kind (`'renter' | 'agent' | 'admin'`) to `api.*`
+     calls that need a bearer token; omit it for public endpoints
+3. Add TanStack Query hooks to a `use*Query.ts` file matching the service
    - Use `useQuery` for reads (set `refetchInterval` if real-time)
-   - Use `useMutation` for writes
+   - Use `useMutation` for writes; invalidate related query keys on success
 4. Export from `src/hooks/index.ts`
 
 ### New UI component
@@ -701,4 +845,4 @@ a backend.
 
 ---
 
-*Last updated: 2026-03-23 · KejaLink v1.0.0 · Nguvu Group*
+*Last updated: 2026-07-27 · KejaLink v1.1.0 · Nguvu Group*

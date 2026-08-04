@@ -25,7 +25,7 @@
     Border   #243330  Warm teal border / dividers.
     Text     #E8E6E1  Warm parchment white (R leads B by 7pts). Feels printed,
                       not projected. ~16:1 on dark BG (WCAG AAA).
-    Muted    #7A7873  Warm grey — organic, not corporate neutral.
+    Muted    #8F8D87  Warm grey — organic, not corporate neutral.
 
   Contrast audit (WCAG 2.1):
     Primary (#00CE92) on Dark BG (#0A0F1E)  →  5.05:1  ✓ AA  (all text sizes)
@@ -33,6 +33,8 @@
     Text    (#E8E6E1) on Dark BG            → ~16.0:1  ✓ AAA
     Amber   (#F5A623) on Dark BG            →  8.20:1  ✓ AAA
     Teal    (#00897B) on Dark BG            →  1.93:1  ✗ FAIL — structure/fill only
+    Muted   (#8F8D87) on Dark BG (#0A0F1E)  →  5.75:1  ✓ AA  (all text sizes)
+    Muted   (#8F8D87) on Card   (#141C1A)   →  5.23:1  ✓ AA  (all text sizes)
   ──────────────────────────────────────────────────────────────────
 */
 
@@ -47,7 +49,7 @@
   --dark:         #0A0F1E;
   --card-bg:      #141C1A;
   --text:         #E8E6E1;
-  --muted-color:  #7A7873;
+  --muted-color:  #8F8D87;
   --border-color: #243330;
   --whatsapp:     #25D366;
 
@@ -63,7 +65,7 @@
   --secondary:             #1E2725;
   --secondary-foreground:  #E8E6E1;
   --muted:                 #243330;
-  --muted-foreground:      #7A7873;
+  --muted-foreground:      #8F8D87;
   --accent:                #00E5FF;
   --accent-foreground:     #0A0F1E;
   --destructive:           #FF6B6B;

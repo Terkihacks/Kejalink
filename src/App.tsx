@@ -4,6 +4,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 import { Navbar, Footer } from '@/components/layout'
 import { HomePage } from '@/features/home'
 import { ErrorBoundary } from '@/components/ui'
+import { RequireAuth } from '@/components/RequireAuth'
 
 /**
  * Route-level code splitting.
@@ -19,6 +20,41 @@ const RequestPage = lazy(() =>
 
 const StatusPage = lazy(() =>
   import('@/features/status').then(m => ({ default: m.StatusPage })),
+)
+
+const AgentLayout = lazy(() =>
+  import('@/features/agent').then(m => ({ default: m.AgentLayout })),
+)
+const AgentLoginPage = lazy(() =>
+  import('@/features/agent').then(m => ({ default: m.AgentLoginPage })),
+)
+const AgentApplyPage = lazy(() =>
+  import('@/features/agent').then(m => ({ default: m.AgentApplyPage })),
+)
+const AgentDashboardPage = lazy(() =>
+  import('@/features/agent').then(m => ({ default: m.AgentDashboardPage })),
+)
+
+const AdminLayout = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminLayout })),
+)
+const AdminLoginPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminLoginPage })),
+)
+const VerificationsQueuePage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.VerificationsQueuePage })),
+)
+const VerificationDetailPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.VerificationDetailPage })),
+)
+const AdminAgentsListPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminAgentsListPage })),
+)
+const AdminAgentDetailPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminAgentDetailPage })),
+)
+const AdminAppealsPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminAppealsPage })),
 )
 
 const DOT_DELAYS = [0, 0.15, 0.3]
@@ -62,9 +98,18 @@ function RootLayout() {
  * Application route tree.
  *
  * Route map:
- *   /                → HomePage        (eager — part of initial bundle)
- *   /request         → RequestPage     (lazy — own chunk)
- *   /request/status  → StatusPage      (lazy — own chunk)
+ *   /                 → HomePage            (eager — part of initial bundle)
+ *   /request          → RequestPage         (lazy — own chunk)
+ *   /results/:token   → StatusPage          (lazy — own chunk, public magic link)
+ *   /agent/login              → AgentLoginPage            (lazy — own header, unauthenticated)
+ *   /agent/apply              → AgentApplyPage            (lazy — AgentLayout, guarded)
+ *   /agent/dashboard          → AgentDashboardPage        (lazy — AgentLayout, guarded)
+ *   /admin/login              → AdminLoginPage            (lazy — own header, unauthenticated)
+ *   /admin/verifications      → VerificationsQueuePage    (lazy — AdminLayout, guarded)
+ *   /admin/verifications/:id  → VerificationDetailPage    (lazy — AdminLayout, guarded)
+ *   /admin/agents             → AdminAgentsListPage       (lazy — AdminLayout, guarded)
+ *   /admin/agents/:id         → AdminAgentDetailPage      (lazy — AdminLayout, guarded)
+ *   /admin/appeals            → AdminAppealsPage          (lazy — AdminLayout, guarded; resolve gated to SUPER_ADMIN)
  */
 export function App() {
   return (
@@ -83,13 +128,101 @@ export function App() {
             }
           />
           <Route
-            path="/request/status"
+            path="/results/:token"
             element={
               <ErrorBoundary>
                 <StatusPage />
               </ErrorBoundary>
             }
           />
+          <Route
+            path="/agent/login"
+            element={
+              <ErrorBoundary>
+                <AgentLoginPage />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            element={
+              <ErrorBoundary>
+                <AgentLayout />
+              </ErrorBoundary>
+            }
+          >
+            <Route
+              path="/agent/apply"
+              element={
+                <RequireAuth kind="agent">
+                  <AgentApplyPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/agent/dashboard"
+              element={
+                <RequireAuth kind="agent">
+                  <AgentDashboardPage />
+                </RequireAuth>
+              }
+            />
+          </Route>
+          <Route
+            path="/admin/login"
+            element={
+              <ErrorBoundary>
+                <AdminLoginPage />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            element={
+              <ErrorBoundary>
+                <AdminLayout />
+              </ErrorBoundary>
+            }
+          >
+            <Route
+              path="/admin/verifications"
+              element={
+                <RequireAuth kind="admin">
+                  <VerificationsQueuePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/verifications/:agentId"
+              element={
+                <RequireAuth kind="admin">
+                  <VerificationDetailPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/agents"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminAgentsListPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/agents/:id"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminAgentDetailPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/appeals"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminAppealsPage />
+                </RequireAuth>
+              }
+            />
+          </Route>
         </Routes>
       </Suspense>
     </ErrorBoundary>
