@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Phone, Loader2 } from 'lucide-react'
 import { Input } from '@/components/ui'
 import { KejaLinkIcon } from '@/components/Logo'
-import { useRequestAgentOtp, useVerifyAgentOtp } from '@/hooks'
+import { useRequestAgentOtp, useVerifyAgentOtp, useSlowRequestNotice } from '@/hooks'
 import { setSession } from '@/lib/auth-storage'
 import { getErrorMessage } from '@/lib/error-messages'
 import { cn } from '@/lib/utils'
@@ -59,6 +59,7 @@ export function AgentLoginPage() {
 
   const isValid = phase === 'phone' ? phone.length >= 9 : otpCode.length === 6
   const isPending = requestOtp.isPending || verifyOtp.isPending
+  const isSlow    = useSlowRequestNotice(isPending)
 
   return (
     <div className="min-h-screen bg-background">
@@ -173,8 +174,17 @@ export function AgentLoginPage() {
                 : 'cursor-not-allowed bg-muted/60 text-muted-foreground',
             )}
           >
-            {isPending ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : phase === 'phone' ? 'Send Verification Code' : 'Verify & Continue'}
+            {isPending
+              ? (isSlow
+                  ? 'Waking up the server…'
+                  : <Loader2 className="mx-auto h-5 w-5 animate-spin" />)
+              : phase === 'phone' ? 'Send Verification Code' : 'Verify & Continue'}
           </button>
+          {isPending && isSlow && (
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              The server was idle and is spinning back up — this can take up to a minute.
+            </p>
+          )}
         </div>
       </main>
     </div>

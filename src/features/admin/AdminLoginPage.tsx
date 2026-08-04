@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ShieldCheck, Loader2 } from 'lucide-react'
 import { Input } from '@/components/ui'
 import { KejaLinkIcon } from '@/components/Logo'
-import { useAdminLogin, useVerifyAdmin2fa } from '@/hooks'
+import { useAdminLogin, useVerifyAdmin2fa, useSlowRequestNotice } from '@/hooks'
 import { setSession } from '@/lib/auth-storage'
 import { getErrorMessage } from '@/lib/error-messages'
 import { cn } from '@/lib/utils'
@@ -47,6 +47,7 @@ export function AdminLoginPage() {
 
   const isValid = phase === 'credentials' ? email.trim() !== '' && password.length >= 8 : totpCode.length === 6
   const isPending = login.isPending || verify2fa.isPending
+  const isSlow    = useSlowRequestNotice(isPending)
 
   return (
     <div className="min-h-screen bg-background">
@@ -149,8 +150,17 @@ export function AdminLoginPage() {
                 : 'cursor-not-allowed bg-muted/60 text-muted-foreground',
             )}
           >
-            {isPending ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : phase === 'credentials' ? 'Continue' : 'Verify & Sign In'}
+            {isPending
+              ? (isSlow
+                  ? 'Waking up the server…'
+                  : <Loader2 className="mx-auto h-5 w-5 animate-spin" />)
+              : phase === 'credentials' ? 'Continue' : 'Verify & Sign In'}
           </button>
+          {isPending && isSlow && (
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              The server was idle and is spinning back up — this can take up to a minute.
+            </p>
+          )}
         </div>
       </main>
     </div>

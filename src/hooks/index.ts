@@ -1,6 +1,7 @@
 export { useScrolled }                                        from './useScrolled'
 export { useIsMobile }                                        from './useIsMobile'
 export { useTheme, type Theme }                               from './useTheme'
+export { useSlowRequestNotice }                                from './useSlowRequestNotice'
 export { useCreateRequest }                                    from './useRequestQuery'
 export { useRequestRenterOtp, useVerifyRenterOtp }             from './useRenterAuth'
 export { useAuthSession }                                      from './useAuthSession'

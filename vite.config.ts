@@ -24,12 +24,12 @@ export default defineConfig({
     },
   },
   server: {
-    // Proxies /api/* to the local backend so browser requests are same-origin —
-    // the backend has no CORS headers configured, so a direct cross-origin
-    // fetch fails with "Failed to fetch" on every mutation.
+    // Proxies /api/* to the live backend so browser requests are same-origin —
+    // the backend's CORS config only allows the deployed Vercel origin, not
+    // localhost:5173, so a direct cross-origin fetch from local dev fails.
     proxy: {
       '/api': {
-        target:       'http://localhost:4000',
+        target:       'https://kejalink-server.onrender.com',
         changeOrigin: true,
         rewrite:      (path) => path.replace(/^\/api/, ''),
       },

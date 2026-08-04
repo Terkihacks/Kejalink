@@ -8,7 +8,7 @@ import { Input } from '@/components/ui'
 import { Slider } from '@/components/ui'
 import { KejaLinkIcon } from '@/components/Logo'
 import { cn } from '@/lib/utils'
-import { useCreateRequest, useRequestRenterOtp, useVerifyRenterOtp } from '@/hooks'
+import { useCreateRequest, useRequestRenterOtp, useVerifyRenterOtp, useSlowRequestNotice } from '@/hooks'
 import { getSession, setSession } from '@/lib/auth-storage'
 import { ApiError } from '@/lib/api'
 import { getErrorMessage } from '@/lib/error-messages'
@@ -96,6 +96,9 @@ export function RequestPage() {
   const isVerifying  = verifyOtp.isPending
   const isCreating   = createRequest.isPending
   const isSubmitting = isVerifying || isCreating
+
+  const isOtpSlow        = useSlowRequestNotice(requestOtp.isPending)
+  const isSubmittingSlow = useSlowRequestNotice(isSubmitting)
 
   // useTransition: marks step changes as non-urgent so React can keep
   // the current step's inputs responsive while the next step renders.
@@ -511,7 +514,9 @@ export function RequestPage() {
             <h1 className="font-display text-2xl font-bold text-foreground">
               {isVerifying ? 'Verifying your number…' : 'Matching you with agents…'}
             </h1>
-            <p className="mt-3 text-muted-foreground">This usually takes under 30 seconds</p>
+            <p className="mt-3 text-muted-foreground">
+              {isSubmittingSlow ? 'The server is waking up from idle — this can take up to a minute' : 'This usually takes under 30 seconds'}
+            </p>
             <div className="mt-6 flex items-center gap-2">
               {[0, 0.15, 0.3].map((delay, i) => (
                 <motion.span
@@ -541,7 +546,7 @@ export function RequestPage() {
                   : 'cursor-not-allowed bg-muted/60 text-muted-foreground',
               )}
             >
-              {requestOtp.isPending ? 'Sending code…' : ctaLabel}
+              {requestOtp.isPending ? (isOtpSlow ? 'Waking up the server…' : 'Sending code…') : ctaLabel}
             </button>
           </div>
         )}
