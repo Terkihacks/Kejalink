@@ -39,11 +39,11 @@ export function Hero() {
           Kenya&apos;s Verified Rental Marketplace
         </motion.p>
 
-        {/* Gradient headline */}
-        <motion.h1
-          variants={fadeUp}
-          className="font-display mx-auto max-w-4xl text-balance text-5xl font-black tracking-tight md:text-6xl lg:text-7xl"
-        >
+        {/* Gradient headline — deliberately NOT a motion element: this is the page's
+            LCP candidate, and Chrome excludes opacity:0 elements from LCP timing
+            until they become visible, so animating it in adds pure delay to the
+            metric with no perceptible UX benefit this high up the page. */}
+        <h1 className="font-display mx-auto max-w-4xl text-balance text-5xl font-black tracking-tight md:text-6xl lg:text-7xl">
           <span
             style={{
               background: 'var(--hero-gradient)',
@@ -56,7 +56,7 @@ export function Hero() {
           </span>
           <br />
           <span className="text-foreground/90">without the stress.</span>
-        </motion.h1>
+        </h1>
 
         {/* Subheading */}
         <motion.p
