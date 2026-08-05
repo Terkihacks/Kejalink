@@ -124,7 +124,7 @@ export function Navbar() {
           </a>
         </nav>
 
-        <p className="absolute bottom-8 left-0 right-0 text-center text-xs font-medium uppercase tracking-[2px] text-muted-foreground/50">
+        <p className="absolute bottom-8 left-0 right-0 text-center text-xs font-medium uppercase tracking-[2px] text-muted-foreground">
           Connect · Verify · Move In
         </p>
       </div>

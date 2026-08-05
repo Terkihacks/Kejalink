@@ -35,6 +35,12 @@
     Teal    (#00897B) on Dark BG            →  1.93:1  ✗ FAIL — structure/fill only
     Muted   (#8F8D87) on Dark BG (#0A0F1E)  →  5.75:1  ✓ AA  (all text sizes)
     Muted   (#8F8D87) on Card   (#141C1A)   →  5.23:1  ✓ AA  (all text sizes)
+    WhatsApp-fg (#04170D) on WhatsApp (#25D366) → 9.34:1  ✓ AAA
+
+  Do not apply opacity modifiers (/50, /60 etc.) to text-foreground or
+  text-muted-foreground for body/label copy — they read fine visually but
+  drop below the ratios audited above. Use the semantic token at full
+  opacity instead.
   ──────────────────────────────────────────────────────────────────
 */
 
@@ -127,6 +133,7 @@
   --color-amber:     #F5A623;   /* Warm amber — agent CTA (was gold #FFB300) */
   --color-gold:      #F5A623;   /* Alias kept for existing class references */
   --color-whatsapp:  #25D366;
+  --color-whatsapp-foreground: #04170D;  /* 9.34:1 on --color-whatsapp — fixed pair, not theme-dependent */
   --color-teal:      #00897B;   /* Structure/fill only — never as text */
 
   /* Border radius scale */

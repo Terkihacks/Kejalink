@@ -42,7 +42,7 @@ export function Footer() {
 
           {/* Quick links */}
           <div>
-            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-foreground/50">
+            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-muted-foreground">
               Quick Links
             </h3>
             <ul className="space-y-3 text-sm">
@@ -64,7 +64,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-foreground/50">
+            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-muted-foreground">
               Contact
             </h3>
             <ul className="space-y-3 text-sm">
@@ -79,12 +79,12 @@ export function Footer() {
 
           {/* Connect */}
           <div>
-            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-foreground/50">
+            <h3 className="mb-5 text-xs font-semibold uppercase tracking-[2px] text-muted-foreground">
               Connect
             </h3>
             <a
               href="#"
-              className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(37,211,102,0.2)] transition-all hover:bg-whatsapp/90 hover:shadow-[0_0_30px_rgba(37,211,102,0.35)]"
+              className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-whatsapp-foreground shadow-[0_0_20px_rgba(37,211,102,0.2)] transition-all hover:bg-whatsapp/90 hover:shadow-[0_0_30px_rgba(37,211,102,0.35)]"
             >
               <MessageCircle className="h-4 w-4" strokeWidth={1.5} />
               Chat on WhatsApp
@@ -97,7 +97,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-8 text-center text-xs text-muted-foreground/60 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-8 text-center text-xs text-muted-foreground sm:flex-row">
           <p>&copy; {new Date().getFullYear()} KejaLink · All rights reserved.</p>
           <p className="font-medium uppercase tracking-[1.5px]">Connect · Verify · Move In</p>
         </div>
