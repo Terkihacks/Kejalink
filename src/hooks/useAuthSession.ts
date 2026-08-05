@@ -3,8 +3,8 @@ import { getSession, AUTH_CHANGE_EVENT, type SessionKind, type AuthSession } fro
 
 /**
  * Reads the stored session for a given kind and re-renders whenever it
- * changes (login/logout/refresh) anywhere in the app — including other
- * components — via the AUTH_CHANGE_EVENT CustomEvent dispatched by
+ * changes (login/logout/refresh) anywhere in the app - including other
+ * components - via the AUTH_CHANGE_EVENT CustomEvent dispatched by
  * setSession/clearSession.
  */
 export function useAuthSession(kind: SessionKind): AuthSession | null {

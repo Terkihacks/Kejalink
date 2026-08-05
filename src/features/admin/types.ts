@@ -26,7 +26,7 @@ export interface AdminAgentListItem {
   verificationStatus:  VerificationStatus
   accountStatus:       AccountStatus
   createdAt:           string
-  /** Observed null in practice even for VERIFIED agents — don't assume it's populated. */
+  /** Observed null in practice even for VERIFIED agents - don't assume it's populated. */
   verification:        { status: VerificationStatus; reviewedAt: string | null } | null
   suspensions:         AdminSuspension[]
 }
@@ -50,7 +50,7 @@ export interface AdminAgentListParams {
   search?:             string
 }
 
-/** GET /admin/verifications queue item — pending/under-review agent with doc URLs. */
+/** GET /admin/verifications queue item - pending/under-review agent with doc URLs. */
 export interface VerificationQueueItem {
   id:                  string
   agentId:             string
@@ -91,7 +91,7 @@ export interface VerificationApproveInput {
   isSocialMediaValid?: boolean
 }
 
-/** Approve/reject don't return a bare {message} — they return this agent summary. */
+/** Approve/reject don't return a bare {message} - they return this agent summary. */
 export interface AgentStatusSummary {
   id:                  string
   name:                string

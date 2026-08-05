@@ -15,7 +15,7 @@ import { FAQ } from './FAQ'
  */
 export function HomePage() {
   useEffect(() => {
-    document.title = 'KejaLink — Kenya\'s Verified Rental Marketplace'
+    document.title = 'KejaLink - Kenya\'s Verified Rental Marketplace'
   }, [])
 
   return (

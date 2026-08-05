@@ -13,8 +13,8 @@
 
     <!--
       Typography:
-        Plus Jakarta Sans — display headings, brand wordmark, hero copy
-        Inter            — body text, UI labels, form inputs, badges
+        Plus Jakarta Sans - display headings, brand wordmark, hero copy
+        Inter            - body text, UI labels, form inputs, badges
       Both loaded from Google Fonts. For a fully offline build, replace with @font-face declarations.
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,7 +25,7 @@
       heavy hydration work shortly after first paint. Deferring the font CSS
       meant it finished loading *during* that hydration window, and applying
       it there forced a page-wide style/layout recalc (font metrics changing)
-      right on top of an already-busy main thread — measured as a ~1.1s Style
+      right on top of an already-busy main thread - measured as a ~1.1s Style
       & Layout main-thread task and 670ms Total Blocking Time. Blocking here
       costs ~650ms of render delay but keeps the font swap off the hydration
       critical path, which is the better trade for this specific app shape.
@@ -35,7 +35,7 @@
       rel="stylesheet"
     />
 
-    <title>KejaLink — Find a House Without Stress</title>
+    <title>KejaLink - Find a House Without Stress</title>
 
     <!--
       Theme flash prevention: apply the saved theme class before React renders

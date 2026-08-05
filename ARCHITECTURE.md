@@ -1,4 +1,4 @@
-# KejaLink — Architecture & Codebase Reference
+# KejaLink - Architecture & Codebase Reference
 
 
 Kenya's verified rental marketplace. Connects renters with pre-vetted agents in under 5 minutes.
@@ -29,15 +29,15 @@ Kenya's verified rental marketplace. Connects renters with pre-vetted agents in 
 |---|---|---|---|
 | UI framework | React | 19 | StrictMode enabled |
 | Language | TypeScript | 5.7 | Strict mode via `tsconfig.app.json` |
-| Styling | Tailwind CSS | 4 | `@tailwindcss/vite` plugin — no postcss config |
+| Styling | Tailwind CSS | 4 | `@tailwindcss/vite` plugin - no postcss config |
 | Build tool | Vite | 6 | ESNext target, source maps on |
 | Routing | React Router | 7 | `BrowserRouter` + `<Routes>` |
 | Server state | TanStack Query | 5 | Polling, caching, mutations |
 | Icons | Lucide React | 0.564 | Outline, consistent stroke-width rules |
-| Animation | tw-animate-css | — | `animate-in`, `zoom-in`, etc. |
-| Class merging | clsx + tailwind-merge | — | via `cn()` utility |
+| Animation | tw-animate-css | - | `animate-in`, `zoom-in`, etc. |
+| Class merging | clsx + tailwind-merge | - | via `cn()` utility |
 | CVA | class-variance-authority | 0.7 | Button variant system |
-| Package manager | pnpm | — | `pnpm-lock.yaml` is source of truth |
+| Package manager | pnpm | - | `pnpm-lock.yaml` is source of truth |
 
 ---
 
@@ -45,45 +45,45 @@ Kenya's verified rental marketplace. Connects renters with pre-vetted agents in 
 
 ```
 src/
-├── App.tsx                   # Route tree — lazy loads request/status/agent/admin pages
-├── main.tsx                  # Entry point — mounts QueryClientProvider + BrowserRouter
+├── App.tsx                   # Route tree - lazy loads request/status/agent/admin pages
+├── main.tsx                  # Entry point - mounts QueryClientProvider + BrowserRouter
 ├── vite-env.d.ts             # Vite import.meta.env type reference
 │
 ├── types/
 │   └── index.ts              # Cross-feature domain types (request/result/match shapes)
 │
 ├── lib/
-│   ├── api.ts                # Typed fetch wrapper — envelope unwrap, bearer auth, 401 refresh-retry
+│   ├── api.ts                # Typed fetch wrapper - envelope unwrap, bearer auth, 401 refresh-retry
 │   ├── auth-storage.ts       # Per-role session persistence (renter/agent/admin), localStorage
 │   ├── error-messages.ts     # ERROR_MESSAGES code table + getErrorMessage()
-│   ├── magic-link.ts         # extractMagicLinkToken() — parses /results/:token from a magicLink URL
-│   ├── constants.ts          # AREAS — shared between the request form and agent apply form
-│   └── utils.ts              # cn() — clsx + tailwind-merge
+│   ├── magic-link.ts         # extractMagicLinkToken() - parses /results/:token from a magicLink URL
+│   ├── constants.ts          # AREAS - shared between the request form and agent apply form
+│   └── utils.ts              # cn() - clsx + tailwind-merge
 │
 ├── services/
-│   ├── requests.ts           # createRequest — POST /requests (authenticated renter)
-│   ├── results.ts            # getResultsByToken — GET /results/:token (public magic link)
+│   ├── requests.ts           # createRequest - POST /requests (authenticated renter)
+│   ├── results.ts            # getResultsByToken - GET /results/:token (public magic link)
 │   ├── renterAuth.ts         # request-otp / verify-otp / logout for RENTER
 │   ├── agentAuth.ts          # request-otp / verify-otp (+ hasProfile) / logout for AGENT
 │   ├── agents.ts             # agent profile (apply/me/patch) + leads (list/accept/decline)
 │   ├── adminAuth.ts          # login / verify-2fa / setup-2fa / disable-2fa for ADMIN
 │   └── admin.ts              # agents (list/get/suspend/unsuspend), appeals, verifications
-│                             # Every function ships an `if (isMockMode)` branch — the app
+│                             # Every function ships an `if (isMockMode)` branch - the app
 │                             # stays fully demoable without a backend running.
 │
 ├── hooks/
 │   ├── index.ts              # Barrel re-exports
 │   ├── useAuthSession.ts     # Reads a stored session, reacts to login/logout events
 │   ├── useRequestQuery.ts    # useCreateRequest
-│   ├── useResultsQuery.ts    # useRequestResults — polls GET /results/:token every 5s
+│   ├── useResultsQuery.ts    # useRequestResults - polls GET /results/:token every 5s
 │   ├── useRenterAuth.ts      # useRequestRenterOtp / useVerifyRenterOtp
 │   ├── useAgentAuth.ts       # useRequestAgentOtp / useVerifyAgentOtp
 │   ├── useAgentQuery.ts      # profile, apply/update, leads (poll 15s), accept/decline
 │   ├── useAdminAuth.ts       # useAdminLogin / useVerifyAdmin2fa
 │   ├── useAdminQuery.ts      # agents, suspend/unsuspend, appeals, verifications
 │   ├── useTheme.ts           # Dark/light toggle + localStorage persistence
-│   ├── useScrolled.ts        # Passive scroll listener — returns bool past threshold
-│   └── useIsMobile.ts        # matchMedia listener — returns bool below 768 px
+│   ├── useScrolled.ts        # Passive scroll listener - returns bool past threshold
+│   └── useIsMobile.ts        # matchMedia listener - returns bool below 768 px
 │
 ├── styles/
 │   └── index.css             # All Tailwind tokens, design system, light mode overrides
@@ -95,7 +95,7 @@ src/
 │   │   ├── Hero.tsx          # Headline + CTAs + trust signals
 │   │   ├── HowItWorks.tsx    # 3-step process cards
 │   │   ├── TrustSection.tsx  # 4 social-proof stat cards
-│   │   ├── BecomeAgent.tsx   # Agent signup section — CTA routes to /agent/login
+│   │   ├── BecomeAgent.tsx   # Agent signup section - CTA routes to /agent/login
 │   │   └── FAQ.tsx           # Accordion FAQ
 │   │
 │   ├── request/
@@ -105,7 +105,7 @@ src/
 │   │
 │   ├── status/
 │   │   ├── index.ts          # Barrel
-│   │   └── StatusPage.tsx    # Public /results/:token — matches feed, polls every 5s
+│   │   └── StatusPage.tsx    # Public /results/:token - matches feed, polls every 5s
 │   │
 │   ├── agent/
 │   │   ├── index.ts          # Barrel
@@ -114,7 +114,7 @@ src/
 │   │   ├── AgentApplyPage.tsx     # One-time profile submission
 │   │   ├── AgentDashboardPage.tsx # Leads list, accept/decline
 │   │   ├── types.ts          # AgentProfile, AgentLead, VerificationStatus, etc.
-│   │   └── constants.ts      # PROPERTY_TYPES (no backend enum — curated list)
+│   │   └── constants.ts      # PROPERTY_TYPES (no backend enum - curated list)
 │   │
 │   └── admin/
 │       ├── index.ts          # Barrel
@@ -129,7 +129,7 @@ src/
 │
 └── components/
     ├── Logo.tsx              # KejaLinkIcon · KejaLinkWordmark SVG components
-    ├── RequireAuth.tsx       # Route guard — session presence/role check, redirects to login
+    ├── RequireAuth.tsx       # Route guard - session presence/role check, redirects to login
     ├── layout/
     │   ├── index.ts
     │   ├── Navbar.tsx        # Sticky header, scroll-aware, mobile drawer
@@ -151,7 +151,7 @@ src/
 ### Route Map
 
 ```
-/                         → HomePage                (RootLayout — Navbar + Footer)
+/                         → HomePage                (RootLayout - Navbar + Footer)
 /request                  → RequestPage              (lazy, own sticky header)
 /results/:token           → StatusPage               (lazy, own header, PUBLIC magic link)
 
@@ -168,7 +168,7 @@ src/
                                                         resolve action further gated to SUPER_ADMIN)
 ```
 
-`/request/status` (the old mock-era route) no longer exists — the status
+`/request/status` (the old mock-era route) no longer exists - the status
 page is reached only via the `magicLink` token returned by `POST /requests`.
 
 ### RootLayout vs. feature-owned shells
@@ -176,7 +176,7 @@ page is reached only via the `magicLink` token returned by `POST /requests`.
 `RootLayout` (`Navbar` + `<Outlet />` + `Footer`) is used only by the home
 page. `RequestPage`/`StatusPage` render their own sticky progress/status
 headers. `AgentLayout`/`AdminLayout` are separate internal-tool shells (logo
-+ session-aware name/logout, no public Navbar/Footer) — these are workspaces
++ session-aware name/logout, no public Navbar/Footer) - these are workspaces
 for authenticated agents/admins, not marketing pages.
 
 ### Route Guards
@@ -191,7 +191,7 @@ for authenticated agents/admins, not marketing pages.
 ```
 
 It only checks whether a session is *present* (and matches an optional
-`roles` allow-list) — it does not decode or check JWT expiry client-side.
+`roles` allow-list) - it does not decode or check JWT expiry client-side.
 Expiry is handled transparently by `api.ts`'s refresh-and-retry (see §4);
 if a refresh ultimately fails, the session is cleared and the next guarded
 navigation redirects to `/${kind}/login`.
@@ -252,7 +252,7 @@ The real backend wraps every response (except `/health`, which is flat):
 `message` is a string for domain errors, or an array of strings for
 class-validator request-validation errors.
 
-### `src/lib/api.ts` — Fetch Wrapper
+### `src/lib/api.ts` - Fetch Wrapper
 
 All calls go through here. Same call-site shape as before, plus an optional
 trailing `auth` argument naming which stored session to attach:
@@ -272,24 +272,24 @@ Internally, `request<T>`:
   session exists for that kind (see `auth-storage.ts` below).
 - Unwraps `{ success: true, data }` → returns `data` directly. On
   `{ success: false, ... }` (or non-2xx), joins array `message`s and throws
-  the existing `ApiError(status, message, code?)` — call sites are
+  the existing `ApiError(status, message, code?)` - call sites are
   unaffected by the envelope change.
 - On a `401` with `auth` set (and not already retried): calls
   `POST /auth/${auth}/refresh` with the stored `refreshToken`, updates the
   session on success, and retries the original request **once**. If refresh
-  fails, clears the session and throws — the next guarded navigation
+  fails, clears the session and throws - the next guarded navigation
   (`RequireAuth`) redirects to that role's login.
 - `/health` is special-cased to skip envelope unwrapping (it returns a flat
   body for uptime/infra tooling).
 
 `isMockMode` is `true` when `VITE_API_BASE_URL` is not set. **Every service
 function below ships its own `if (isMockMode)` branch that bypasses
-`api.ts` entirely** — the app stays fully demoable without a backend.
+`api.ts` entirely** - the app stays fully demoable without a backend.
 
-### `src/lib/auth-storage.ts` — Session Persistence
+### `src/lib/auth-storage.ts` - Session Persistence
 
-One localStorage key per session kind — `keja-auth-renter`,
-`keja-auth-agent`, `keja-auth-admin` — so a renter/agent/admin session can
+One localStorage key per session kind - `keja-auth-renter`,
+`keja-auth-agent`, `keja-auth-admin` - so a renter/agent/admin session can
 coexist in the same browser (useful across dev tabs). Mirrors the
 lazy-`useState` + write-on-change pattern `useTheme` already uses, applied
 to a JSON blob:
@@ -300,7 +300,7 @@ export function setSession(kind: SessionKind, session: AuthSession): void   // d
 export function clearSession(kind: SessionKind): void                       // dispatches 'keja-auth-change'
 ```
 
-No JWT decoding happens client-side — `verify-otp`/`verify-2fa` responses
+No JWT decoding happens client-side - `verify-otp`/`verify-2fa` responses
 already include `user.role`, which is stored directly. `useAuthSession(kind)`
 wraps `getSession` in state and re-renders on the `keja-auth-change` event.
 
@@ -310,13 +310,13 @@ wraps `getSession` in state and re-renders on the `keja-auth-change` event.
 |---|---|---|
 | `renterAuth.ts` | `POST /auth/renter/{request-otp,verify-otp,logout}` | Mock: code `123456` always verifies |
 | `requests.ts` | `POST /requests` | Requires renter auth; phone comes from the JWT, not the body |
-| `results.ts` | `GET /results/:token` | Public — no `auth` kind passed |
+| `results.ts` | `GET /results/:token` | Public - no `auth` kind passed |
 | `agentAuth.ts` | `POST /auth/agent/{request-otp,verify-otp,logout}` | `verify-otp` also returns `hasProfile`; logout has **no** header fallback (body-only) |
 | `agents.ts` | `POST /agents/apply`, `PATCH /agents/me`, `GET /agents/me`, `GET /agents/leads`, `POST /agents/leads/:id/{accept,decline}` | `getMyAgentProfile()` catches a `404` and returns `null` instead of throwing |
 | `adminAuth.ts` | `POST /auth/admin/{login,verify-2fa,setup-2fa,disable-2fa}` | Two-step login; `otpCode` bootstrap hint only appears pre-2FA-setup |
 | `admin.ts` | `GET/POST /admin/agents/*`, `/admin/appeals/*`, `/admin/verifications/*` | List endpoints take query params via a small `query()` helper |
 
-### API Contract (selected — see the companion API reference for full detail)
+### API Contract (selected - see the companion API reference for full detail)
 
 #### `POST /requests` (🔒 renter)
 ```json
@@ -340,9 +340,9 @@ wraps `getSession` in state and re-renders on the `keja-auth-change` event.
 }
 ```
 `status`: `MATCHED` | `PENDING_SUPPLY`. Errors: `401 MAGIC_LINK_INVALID`, `410 MAGIC_LINK_REVOKED`.
-Match `status`: `NOTIFIED` | `ACCEPTED` | `DECLINED` | `EXPIRED` — agent phone is visible immediately, before acceptance.
+Match `status`: `NOTIFIED` | `ACCEPTED` | `DECLINED` | `EXPIRED` - agent phone is visible immediately, before acceptance.
 
-### Data Flow — Request Submission
+### Data Flow - Request Submission
 
 ```
 RequestPage (form state, steps 1–4) → step 5 (otpPhase: 'phone' | 'otp')
@@ -352,7 +352,7 @@ RequestPage (form state, steps 1–4) → step 5 (otpPhase: 'phone' | 'otp')
   └─ 'otp' phase: handleVerifyAndSubmit()
         │
         ├─ useVerifyRenterOtp().mutateAsync({ phone, code })  →  setSession('renter', ...)
-        │    (skipped if a session already exists — lets a failed createRequest retry
+        │    (skipped if a session already exists - lets a failed createRequest retry
         │     without re-verifying the OTP)
         │
         ├─ useCreateRequest().mutateAsync({ area, budgetMin, budgetMax, bedrooms, timeline })
@@ -360,28 +360,28 @@ RequestPage (form state, steps 1–4) → step 5 (otpPhase: 'phone' | 'otp')
         └─ navigate(`/results/${extractMagicLinkToken(result.magicLink)}`)
 ```
 
-### Data Flow — Status Page Polling
+### Data Flow - Status Page Polling
 
 ```
 StatusPage mounts
   │
-  ├─ token = useParams().token   (from the magicLink URL, not React Router state —
+  ├─ token = useParams().token   (from the magicLink URL, not React Router state -
   │                                bookmarkable and survives a page refresh)
   │
-  └─ useRequestResults(token) — polls GET /results/:token every 5s
+  └─ useRequestResults(token) - polls GET /results/:token every 5s
       ├─ status === 'PENDING_SUPPLY' → "no agents in this area yet" empty state
       ├─ status === 'MATCHED'        → matches[] rendered as MatchCard rows
       └─ error (401/410)             → "link invalid/closed" + CTA back to /request
 ```
 
-### Data Flow — Agent Leads
+### Data Flow - Agent Leads
 
 ```
 AgentDashboardPage mounts
   │
   ├─ useAgentProfile() → verificationStatus banner if not yet VERIFIED
   │
-  └─ useAgentLeads() — polls GET /agents/leads every 15s
+  └─ useAgentLeads() - polls GET /agents/leads every 15s
       └─ per-lead Accept/Decline → invalidates ['agent-leads'] on success
          (decline shows the `rematch` message: "next agent notified" or "no agents available")
 ```
@@ -412,17 +412,17 @@ selectedArea  : string    (single-select area pill)
 budgetMin     : [number]  (Slider returns single-element array)
 budgetMax     : [number]
 houseType     : string    (id from HOUSE_TYPES constant, mapped to `bedrooms` at submit time)
-moveTimeline  : string    (id IS the RequestTimeline enum value — no translation needed)
+moveTimeline  : string    (id IS the RequestTimeline enum value - no translation needed)
 phone         : string    (digits only, no +254 prefix)
 otpPhase      : 'phone' | 'otp'   (sub-phase of step 5, not a separate step)
 otpCode       : string
 ```
 
 `isValid` (a `useMemo`) is derived from those fields based on the current
-step (and, for step 5, the current `otpPhase`) — it drives the disabled
+step (and, for step 5, the current `otpPhase`) - it drives the disabled
 state of the Continue / Submit button.
 
-Auth session state is intentionally **not** React state — it's read
+Auth session state is intentionally **not** React state - it's read
 lazily from `localStorage` via `useAuthSession(kind)`, which re-renders on
 the `keja-auth-change` event fired by `setSession`/`clearSession`. This
 lets any component (e.g. `AgentLayout`'s top bar) reflect login/logout
@@ -464,7 +464,7 @@ their specific props change, not just because the parent re-ran.
 | `newCount` (unread notifications) | StatusPage | `notifications` array |
 | `isValid` (form step gate) | RequestPage | `step`, current step's field |
 
-`isValid` is particularly important — without memoisation, every keystroke
+`isValid` is particularly important - without memoisation, every keystroke
 in the phone field on step 5 would re-evaluate validation for all 5 steps.
 
 ### useCallback
@@ -476,10 +476,10 @@ these functions as props or uses them as `useEffect` dependencies.
 ### useTransition
 
 Step navigation in `RequestPage` wraps `setStep` in `startTransition`.
-React treats the step change as non-urgent — if the user is typing or
+React treats the step change as non-urgent - if the user is typing or
 tapping when the transition fires, their input is processed first.
 
-### TanStack Query — Polling Efficiency
+### TanStack Query - Polling Efficiency
 
 `staleTime` is set 1 s below `refetchInterval` for each query:
 - Status: `staleTime: 4_000`, `refetchInterval: 5_000`
@@ -489,7 +489,7 @@ This prevents the StrictMode double-invoke (which mounts → unmounts →
 remounts components) from triggering two back-to-back fetches.
 
 `placeholderData: (prev) => prev` on the notifications query means the UI
-never flickers to empty between polls — the previous data stays visible
+never flickers to empty between polls - the previous data stays visible
 while the next fetch is in flight.
 
 ---
@@ -509,21 +509,21 @@ blue-shifted palette common in AI/fintech products.
 |---|---|---|---|
 | `--primary` (dark) | `#00CE92` | 5.05:1 ✓ AA | All CTAs, active states, verified badges, key data |
 | `--primary` (light) | `#007A52` | ~5.0:1 ✓ AA | Same role, adjusted for light BG |
-| `--teal` | `#00897B` | 1.93:1 ✗ FAIL | **Structure/fill only** — chip BGs, borders, icon containers. NEVER text |
-| `--accent` | `#00E5FF` | — | Availability dots, live indicators only — keep minimal |
+| `--teal` | `#00897B` | 1.93:1 ✗ FAIL | **Structure/fill only** - chip BGs, borders, icon containers. NEVER text |
+| `--accent` | `#00E5FF` | - | Availability dots, live indicators only - keep minimal |
 | `--gold` / `--amber` | `#F5A623` | 8.20:1 ✓ AAA | Agent CTA, urgency, ratings |
-| `--whatsapp` | `#25D366` | — | WhatsApp buttons only — fixed brand colour |
-| `--background` | `#0A0F1E` | — | Page background (deep navy) |
-| `--card` | `#141C1A` | — | Card surface (warm teal-dark) |
+| `--whatsapp` | `#25D366` | - | WhatsApp buttons only - fixed brand colour |
+| `--background` | `#0A0F1E` | - | Page background (deep navy) |
+| `--card` | `#141C1A` | - | Card surface (warm teal-dark) |
 | `--foreground` | `#E8E6E1` | 16:1 ✓ AAA | Primary text (warm parchment) |
-| `--muted-foreground` | `#7A7873` | — | Secondary text, labels, icons |
+| `--muted-foreground` | `#7A7873` | - | Secondary text, labels, icons |
 
 ### Surface Elevation
 
 ```
-Background  #0A0F1E  (deepest — page bg)
-Card        #141C1A  (base surface — most cards)
-Secondary   #1E2725  (elevated — selected state BG, info chips)
+Background  #0A0F1E  (deepest - page bg)
+Card        #141C1A  (base surface - most cards)
+Secondary   #1E2725  (elevated - selected state BG, info chips)
 Popover     #181F1D  (modals, dropdowns)
 Surface3    #1E2725  (drawers, bottom sheets)
 ```
@@ -541,7 +541,7 @@ organic rather than cold.
 Both fonts are loaded via Google Fonts `<link>` in `index.html`.
 
 **Number formatting rules:**
-- `tabular-nums` only on **animating** numbers (budget slider) or **stacked** price lists — never on static stats
+- `tabular-nums` only on **animating** numbers (budget slider) or **stacked** price lists - never on static stats
 - Display numbers (KES amounts, stat figures): `font-display`, `tracking-[-0.015em]`
 - KES label: `text-xs uppercase tracking-widest text-muted-foreground`, above the number
 
@@ -554,10 +554,10 @@ Both fonts are loaded via Google Fonts `<link>` in `index.html`.
 | Utility cards (time, share) | `h-11 w-11` | `h-5 w-5` | `rounded-xl` | 2 |
 | Trust / reassurance badges | `h-8 w-8` | `h-4 w-4` | `rounded-lg` | 1.5 |
 | Communication (WhatsApp, push) | `h-12 w-12` | `h-6 w-6` | `rounded-full` | 2 |
-| Avatars / success state | varies | — | `rounded-full` | — |
-| Inline with text (h-4 = 16 px) | none | `h-4 w-4` | — | 1.5 |
-| Navigation chrome (h-5 = 20 px) | `h-11 w-11` touch zone | `h-5 w-5` | — | 2 |
-| CTA button trailing arrow | none | `h-4 w-4` | — | 1.5 |
+| Avatars / success state | varies | - | `rounded-full` | - |
+| Inline with text (h-4 = 16 px) | none | `h-4 w-4` | - | 1.5 |
+| Navigation chrome (h-5 = 20 px) | `h-11 w-11` touch zone | `h-5 w-5` | - | 2 |
+| CTA button trailing arrow | none | `h-4 w-4` | - | 1.5 |
 
 **Container ratio rule:** icon always occupies exactly 50% of the container
 dimension (`h-6 w-6` in `h-12 w-12`). This is the "premium" ratio used by
@@ -606,7 +606,7 @@ Reads/writes `useTheme` hook. `h-4 w-4` icons at `strokeWidth={1.5}`.
 
 ### `ErrorBoundary`
 
-Class component (required — hooks cannot catch render errors).
+Class component (required - hooks cannot catch render errors).
 - `getDerivedStateFromError` captures the error into state
 - `componentDidCatch` logs to console (swap for Sentry/Datadog)
 - Renders a branded recovery UI with a "Try again" reset button
@@ -620,7 +620,7 @@ Class component (required — hooks cannot catch render errors).
 </RequireAuth>
 ```
 
-Presence/role gate — `<Navigate to={`/${kind}/login`} replace />` if no
+Presence/role gate - `<Navigate to={`/${kind}/login`} replace />` if no
 session exists for `kind`, or if `roles` is given and the session's role
 isn't in it. Does not decode JWT expiry (see `api.ts` in §4).
 
@@ -646,7 +646,7 @@ class *before* React hydrates to prevent flash of wrong theme.
 const scrolled = useScrolled()  // true once Y > 8 px
 ```
 
-Passive scroll listener — never blocks the main thread. Used by `Navbar`
+Passive scroll listener - never blocks the main thread. Used by `Navbar`
 to add the border + blur shadow once the user starts scrolling.
 
 ### `useIsMobile()`
@@ -655,7 +655,7 @@ to add the border + blur shadow once the user starts scrolling.
 const isMobile = useIsMobile()  // true below 768 px
 ```
 
-Uses `window.matchMedia` — no `resize` polling. Initialises synchronously
+Uses `window.matchMedia` - no `resize` polling. Initialises synchronously
 on mount so there is no flash of incorrect layout.
 
 ### `useAuthSession(kind)`
@@ -671,7 +671,7 @@ the app, including other components).
 ### `useCreateRequest()`
 
 TanStack Query mutation. Returns `{ mutateAsync, isPending, isError, error }`.
-Calls `createRequest()` — `POST /requests` with the authenticated renter's
+Calls `createRequest()` - `POST /requests` with the authenticated renter's
 session attached.
 
 ### `useRequestRenterOtp()` / `useVerifyRenterOtp()`
@@ -686,7 +686,7 @@ The agent variant's verify result additionally includes `hasProfile`.
 const { data, error, isLoading } = useRequestResults(token)
 ```
 
-Polls `GET /results/:token` every 5 seconds (public — no auth). `data` is
+Polls `GET /results/:token` every 5 seconds (public - no auth). `data` is
 `RequestResult | undefined`. Disabled when `token` is falsy.
 
 ### `useAgentProfile()` / `useApplyAsAgent()` / `useUpdateAgentProfile()`
@@ -708,7 +708,7 @@ Two-step admin login mutations.
 ### `useAdminAppeals()` / `useEscalateAppeal()` / `useResolveAppeal()`
 ### `useVerificationsQueue()` / `useVerificationDetail(agentId)` / `useApproveVerification()` / `useRejectVerification()`
 
-Admin queries/mutations — every mutation invalidates the relevant list
+Admin queries/mutations - every mutation invalidates the relevant list
 and/or detail query on success (e.g. approving a verification invalidates
 both the verifications queue and the agents list, since both reflect
 `verificationStatus`).
@@ -785,7 +785,7 @@ dist/assets/index-*.css         # All Tailwind styles
 ### No PostCSS Config
 
 `@tailwindcss/vite` handles CSS processing directly as a Vite plugin.
-There is no `postcss.config.mjs`. Do not create one — it will conflict.
+There is no `postcss.config.mjs`. Do not create one - it will conflict.
 
 ---
 
@@ -799,7 +799,7 @@ All `VITE_` prefixed variables are inlined at build time by Vite and
 accessible via `import.meta.env.VITE_*`.
 
 **Mock mode** is active when `VITE_API_BASE_URL` is empty or absent. Every
-service function returns realistic fake data with simulated delays — OTP
+service function returns realistic fake data with simulated delays - OTP
 codes accept `123456`, requests get a fake `magicLink`, agent/admin lists
 are seeded with a couple of representative records. The UI is fully
 functional without a backend.
@@ -824,7 +824,7 @@ functional without a backend.
 
 ### New API resource
 
-1. Add types — cross-feature shapes go in `src/types/index.ts`; feature-only
+1. Add types - cross-feature shapes go in `src/types/index.ts`; feature-only
    shapes go in `src/features/<name>/types.ts` (see `agent/types.ts` /
    `admin/types.ts` for the pattern)
 2. Add service functions to `src/services/` (new file or existing)

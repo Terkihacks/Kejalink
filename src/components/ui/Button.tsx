@@ -5,12 +5,12 @@ import { cn } from '@/lib/utils'
 /**
  * Visual variants for the Button component.
  *
- * `default`     — primary brand green, glow shadow on hover
- * `destructive` — red, for irreversible or dangerous actions
- * `outline`     — transparent background, bordered, hover border turns green
- * `secondary`   — muted slate background
- * `ghost`       — no background until hover; ideal for icon-only actions
- * `link`        — appears as underlined text, no background
+ * `default`     - primary brand green, glow shadow on hover
+ * `destructive` - red, for irreversible or dangerous actions
+ * `outline`     - transparent background, bordered, hover border turns green
+ * `secondary`   - muted slate background
+ * `ghost`       - no background until hover; ideal for icon-only actions
+ * `link`        - appears as underlined text, no background
  */
 export const buttonVariants = cva(
   [
@@ -57,7 +57,7 @@ export type ButtonProps = ComponentProps<'button'> & VariantProps<typeof buttonV
  * Core interactive button.
  *
  * Built on a native `<button>` element with CVA-driven variants.
- * No Radix UI dependency — no `asChild` prop (use a wrapping `<Link>` or `<a>` instead).
+ * No Radix UI dependency - no `asChild` prop (use a wrapping `<Link>` or `<a>` instead).
  *
  * @example
  * <Button>Submit</Button>

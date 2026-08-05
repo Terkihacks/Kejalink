@@ -2,13 +2,13 @@
  * Typed fetch wrapper for the KejaLink API.
  *
  * Set VITE_API_BASE_URL in your .env file to point at your backend.
- * When the variable is absent the app runs in mock mode — all calls
+ * When the variable is absent the app runs in mock mode - all calls
  * resolve with realistic fake data so the UI works without a backend.
  *
  * The real backend wraps every response in an envelope:
  *   success: { success: true, data: T }
  *   error:   { success: false, code: string, message: string | string[], statusCode: number }
- * `/health` is the one exception — it returns a flat, unwrapped body.
+ * `/health` is the one exception - it returns a flat, unwrapped body.
  */
 
 import { getSession, setSession, clearSession, type SessionKind } from '@/lib/auth-storage'
@@ -95,7 +95,7 @@ async function request<T>(path: string, init: RequestOptions = {}, retried = fal
     },
   })
 
-  // /health returns a flat, unwrapped body — never part of the envelope contract.
+  // /health returns a flat, unwrapped body - never part of the envelope contract.
   if (path === '/health') {
     if (!res.ok) throw new ApiError(res.status, res.statusText)
     return res.json() as Promise<T>

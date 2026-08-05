@@ -29,12 +29,12 @@ const STEPS: Step[] = [
     num: '03',
     title: 'Schedule a Viewing',
     description:
-      'Connect directly with agents, tour homes, and move in — all on your own timeline.',
+      'Connect directly with agents, tour homes, and move in - all on your own timeline.',
   },
 ]
 
 /**
- * "How It Works" section — three numbered steps explaining the renter journey.
+ * "How It Works" section - three numbered steps explaining the renter journey.
  *
  * Uses dashed connector lines between cards on desktop (hidden on mobile).
  * Cards gain a green glow on hover via Tailwind's `group` modifier.
@@ -82,7 +82,7 @@ export function HowItWorks() {
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
         >
-          Connect · Verify · Move In — in three simple steps.
+          Connect · Verify · Move In - in three simple steps.
         </motion.p>
 
         <motion.div

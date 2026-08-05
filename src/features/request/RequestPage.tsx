@@ -56,11 +56,11 @@ function StepHeading({ icon, children }: { icon: ReactNode; children: ReactNode 
  * Multi-step house request form.
  *
  * Steps:
- *  1. Location  — single area select
- *  2. Budget    — KES min/max range (two sliders)
- *  3. House type — card selection (mapped to `bedrooms` at submit time)
- *  4. Timeline  — card list (id is the exact API enum value)
- *  5. Phone verification — phone entry, then inline OTP entry (same step,
+ *  1. Location  - single area select
+ *  2. Budget    - KES min/max range (two sliders)
+ *  3. House type - card selection (mapped to `bedrooms` at submit time)
+ *  4. Timeline  - card list (id is the exact API enum value)
+ *  5. Phone verification - phone entry, then inline OTP entry (same step,
  *     two phases) before the actual POST /requests call fires
  *
  * On final submit → verify OTP → create request → navigate to the
@@ -515,7 +515,7 @@ export function RequestPage() {
               {isVerifying ? 'Verifying your number…' : 'Matching you with agents…'}
             </h1>
             <p className="mt-3 text-muted-foreground">
-              {isSubmittingSlow ? 'The server is waking up from idle — this can take up to a minute' : 'This usually takes under 30 seconds'}
+              {isSubmittingSlow ? 'The server is waking up from idle - this can take up to a minute' : 'This usually takes under 30 seconds'}
             </p>
             <div className="mt-6 flex items-center gap-2">
               {[0, 0.15, 0.3].map((delay, i) => (

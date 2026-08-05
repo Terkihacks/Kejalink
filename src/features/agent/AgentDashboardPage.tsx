@@ -136,7 +136,7 @@ export function AgentDashboardPage() {
       ) : (
         <div className="rounded-2xl border border-border/60 bg-card p-8 text-center">
           <Clock className="mx-auto mb-3 h-8 w-8 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">No leads yet — new matches will show up here.</p>
+          <p className="text-sm text-muted-foreground">No leads yet - new matches will show up here.</p>
         </div>
       )}
     </div>

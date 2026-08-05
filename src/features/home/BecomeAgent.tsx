@@ -16,7 +16,7 @@ const BENEFITS: Benefit[] = [
     icon: MessageSquare,
     title: 'Get Real Requests',
     description:
-      'Receive qualified tenant requests from active renters who are ready to move — in your area.',
+      'Receive qualified tenant requests from active renters who are ready to move - in your area.',
     iconColor: 'text-primary',
     iconBg:    'bg-primary/10 border-primary/20',
   },
@@ -47,7 +47,7 @@ const BENEFITS: Benefit[] = [
 ]
 
 /**
- * "Become an Agent" section — targets property agents, showcasing three benefits
+ * "Become an Agent" section - targets property agents, showcasing three benefits
  * and a gold CTA button to sign up for agent verification.
  * Benefit cards stagger in from below as they scroll into view (once).
  */
@@ -88,7 +88,7 @@ export function BecomeAgent() {
           </motion.h2>
           <motion.p variants={fadeUp} className="mx-auto max-w-xl text-muted-foreground">
             Join Kenya&apos;s fastest-growing rental network. Get real tenant requests delivered
-            directly to you — no cold calling, no guesswork.
+            directly to you - no cold calling, no guesswork.
           </motion.p>
         </motion.div>
 

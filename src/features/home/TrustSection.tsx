@@ -42,7 +42,7 @@ const STATS: Stat[] = [
 ]
 
 /**
- * Trust / social-proof section — four key metrics displayed as large stat cards.
+ * Trust / social-proof section - four key metrics displayed as large stat cards.
  *
  * A central ambient glow reinforces the brand palette. Icon containers scale up
  * on hover via `group-hover:scale-110` to add subtle interactivity.

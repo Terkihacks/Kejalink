@@ -1,5 +1,5 @@
 /**
- * Agent OTP auth — request-otp / verify-otp / logout.
+ * Agent OTP auth - request-otp / verify-otp / logout.
  *
  * Mock branch: any phone succeeds, code '123456' always verifies.
  */
@@ -43,7 +43,7 @@ export async function verifyAgentOtp(phone: string, code: string): Promise<Verif
 }
 
 /**
- * Unlike renter logout, agent logout has no Authorization-header fallback —
+ * Unlike renter logout, agent logout has no Authorization-header fallback -
  * the refreshToken must always be sent in the body.
  */
 export async function logoutAgent(refreshToken: string): Promise<{ message: string }> {

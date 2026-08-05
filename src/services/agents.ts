@@ -1,5 +1,5 @@
 /**
- * Agent profile + leads — all routes require an authenticated AGENT session.
+ * Agent profile + leads - all routes require an authenticated AGENT session.
  */
 
 import { api, ApiError, isMockMode } from '@/lib/api'

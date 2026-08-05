@@ -39,7 +39,7 @@ export function Hero() {
           Kenya&apos;s Verified Rental Marketplace
         </motion.p>
 
-        {/* Gradient headline — deliberately NOT a motion element: this is the page's
+        {/* Gradient headline - deliberately NOT a motion element: this is the page's
             LCP candidate, and Chrome excludes opacity:0 elements from LCP timing
             until they become visible, so animating it in adds pure delay to the
             metric with no perceptible UX benefit this high up the page. */}

@@ -1,5 +1,5 @@
 /**
- * Admin email+password+TOTP auth — two-step login.
+ * Admin email+password+TOTP auth - two-step login.
  */
 
 import { api, isMockMode } from '@/lib/api'

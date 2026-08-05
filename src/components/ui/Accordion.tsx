@@ -37,7 +37,7 @@ interface AccordionProps {
 /**
  * Unstyled accordion root.
  *
- * Zero Radix UI dependency — implemented with React context + `useState`.
+ * Zero Radix UI dependency - implemented with React context + `useState`.
  * Smooth height animation is achieved with the CSS `grid-template-rows` trick,
  * which requires no JS height measurement.
  *

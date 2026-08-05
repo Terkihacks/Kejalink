@@ -1,5 +1,5 @@
 /**
- * Request service — creates a rental request as an authenticated renter.
+ * Request service - creates a rental request as an authenticated renter.
  *
  * When VITE_API_BASE_URL is not set the module falls back to realistic
  * mock data so the UI remains fully functional without a backend.
@@ -14,7 +14,7 @@ function delay<T>(value: T, ms = 1_200): Promise<T> {
 
 /**
  * Submit a new house request. Requires an authenticated renter session
- * (see useVerifyRenterOtp) — the phone number is tied to the JWT, not
+ * (see useVerifyRenterOtp) - the phone number is tied to the JWT, not
  * part of the request body.
  */
 export async function createRequest(input: CreateRequestInput): Promise<CreateRequestOutput> {

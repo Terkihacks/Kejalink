@@ -158,7 +158,7 @@ export function AdminLoginPage() {
           </button>
           {isPending && isSlow && (
             <p className="mt-3 text-center text-xs text-muted-foreground">
-              The server was idle and is spinning back up — this can take up to a minute.
+              The server was idle and is spinning back up - this can take up to a minute.
             </p>
           )}
         </div>

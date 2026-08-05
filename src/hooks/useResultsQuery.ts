@@ -11,7 +11,7 @@ export function useRequestResults(token: string | null | undefined) {
     queryFn:         () => getResultsByToken(token!),
     enabled:         !!token,
     refetchInterval: 5_000,
-    // Data stays fresh for 4s — avoids a redundant refetch if the component
+    // Data stays fresh for 4s - avoids a redundant refetch if the component
     // remounts within the poll window (e.g. React StrictMode double-invoke).
     staleTime:       4_000,
     // Keep cached data for 2 min after the component unmounts so a back-

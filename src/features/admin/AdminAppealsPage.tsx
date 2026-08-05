@@ -66,7 +66,7 @@ export function AdminAppealsPage() {
                   </button>
                 )}
 
-                {/* Resolving is gated to SUPER_ADMIN — regular ADMIN can view + escalate only. */}
+                {/* Resolving is gated to SUPER_ADMIN - regular ADMIN can view + escalate only. */}
                 {isSuperAdmin && (
                   resolvingId === appeal.id ? (
                     <div className="flex flex-wrap gap-2">

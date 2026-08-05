@@ -10,7 +10,7 @@ interface RequireAuthProps {
 }
 
 /**
- * Presence/role gate for a stored session — no JWT expiry decoding here,
+ * Presence/role gate for a stored session - no JWT expiry decoding here,
  * that's handled transparently by api.ts's refresh-and-retry. If a query
  * or mutation ultimately fails with a cleared session, the page itself
  * should redirect (this component only covers the initial route entry).

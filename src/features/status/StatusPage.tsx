@@ -46,7 +46,7 @@ const MAX_EXPECTED_AGENTS = 2
 
 const MATCH_STATUS_CONFIG: Record<MatchStatus, { label: string; badgeClass: string; showContact: boolean }> = {
   NOTIFIED: { label: 'Reviewing your request',   badgeClass: 'border-gold/30 bg-gold/15 text-gold',                      showContact: true },
-  ACCEPTED: { label: 'Accepted — ready to help', badgeClass: 'border-primary/30 bg-primary/15 text-primary',             showContact: true },
+  ACCEPTED: { label: 'Accepted - ready to help', badgeClass: 'border-primary/30 bg-primary/15 text-primary',             showContact: true },
   DECLINED: { label: 'Not available',            badgeClass: 'border-border/60 bg-muted/60 text-muted-foreground',       showContact: false },
   EXPIRED:  { label: 'No longer responding',     badgeClass: 'border-border/60 bg-muted/60 text-muted-foreground',       showContact: false },
 }
@@ -72,7 +72,7 @@ const InfoChip = memo(function InfoChip({ icon, label }: { icon: ReactNode; labe
   )
 })
 
-/** Individual matched-agent row — status drives badge copy and whether contact actions show. */
+/** Individual matched-agent row - status drives badge copy and whether contact actions show. */
 const MatchCard = memo(function MatchCard({ match }: { match: RequestMatch }) {
   const config  = MATCH_STATUS_CONFIG[match.status]
   const waLink  = `https://wa.me/${match.agent.phone}`
@@ -130,7 +130,7 @@ const MatchCard = memo(function MatchCard({ match }: { match: RequestMatch }) {
 /**
  * Request status tracking page (`/results/:token`).
  *
- * `token` is the magic-link token returned by POST /requests — this route
+ * `token` is the magic-link token returned by POST /requests - this route
  * is PUBLIC (no auth) so the link can be bookmarked/shared and keeps
  * working even after the renter's short-lived access token expires.
  */
@@ -201,7 +201,7 @@ export function StatusPage() {
     )
   }
 
-  // ── Error — magic link invalid/expired/revoked, or the request wasn't found ──
+  // ── Error - magic link invalid/expired/revoked, or the request wasn't found ──
   if (error) {
     const code       = error instanceof ApiError ? error.code : undefined
     const isRevoked  = code === 'MAGIC_LINK_REVOKED'
@@ -266,7 +266,7 @@ export function StatusPage() {
             <h2 className="font-semibold text-foreground">No agents available yet</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               We don&apos;t have a verified agent covering {location} right now. We&apos;ll notify you
-              the moment one becomes available — check back soon.
+              the moment one becomes available - check back soon.
             </p>
           </Card>
         ) : (
@@ -370,7 +370,7 @@ export function StatusPage() {
         <Card className="p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-foreground">Your Request Details</h2>
-            {/* Editing means starting a brand-new request/OTP flow — there's
+            {/* Editing means starting a brand-new request/OTP flow - there's
                 no PATCH endpoint for an existing request. */}
             <Link
               to="/request"
@@ -493,9 +493,9 @@ export function StatusPage() {
         <Card className="p-5">
           <div className="grid gap-3">
             {[
-              { Icon: BadgeCheck, text: 'Verified agents only — no unvetted contacts' },
-              { Icon: Shield,     text: 'No fake listings — every property is checked' },
-              { Icon: Zap,        text: 'Fast response — average 3–5 minutes' },
+              { Icon: BadgeCheck, text: 'Verified agents only - no unvetted contacts' },
+              { Icon: Shield,     text: 'No fake listings - every property is checked' },
+              { Icon: Zap,        text: 'Fast response - average 3–5 minutes' },
             ].map(({ Icon, text }) => (
               <div key={text} className="flex items-center gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-primary/10">

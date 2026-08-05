@@ -1,5 +1,5 @@
 /**
- * Public magic-link results lookup — no auth required.
+ * Public magic-link results lookup - no auth required.
  */
 
 import { api, isMockMode } from '@/lib/api'

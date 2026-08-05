@@ -1,5 +1,5 @@
 /**
- * Renter OTP auth — request-otp / verify-otp / logout.
+ * Renter OTP auth - request-otp / verify-otp / logout.
  *
  * Mock branch: any phone succeeds, code '123456' always verifies.
  */

@@ -5,7 +5,7 @@ export type Theme = 'dark' | 'light'
 const STORAGE_KEY = 'keja-theme'
 
 /**
- * Manages the app colour theme — dark (default) or light.
+ * Manages the app colour theme - dark (default) or light.
  *
  * Strategy:
  *  - Dark is the default. The `:root` CSS tokens define the dark palette.

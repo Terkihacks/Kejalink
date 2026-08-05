@@ -98,18 +98,18 @@ function RootLayout() {
  * Application route tree.
  *
  * Route map:
- *   /                 → HomePage            (eager — part of initial bundle)
- *   /request          → RequestPage         (lazy — own chunk)
- *   /results/:token   → StatusPage          (lazy — own chunk, public magic link)
- *   /agent/login              → AgentLoginPage            (lazy — own header, unauthenticated)
- *   /agent/apply              → AgentApplyPage            (lazy — AgentLayout, guarded)
- *   /agent/dashboard          → AgentDashboardPage        (lazy — AgentLayout, guarded)
- *   /admin/login              → AdminLoginPage            (lazy — own header, unauthenticated)
- *   /admin/verifications      → VerificationsQueuePage    (lazy — AdminLayout, guarded)
- *   /admin/verifications/:id  → VerificationDetailPage    (lazy — AdminLayout, guarded)
- *   /admin/agents             → AdminAgentsListPage       (lazy — AdminLayout, guarded)
- *   /admin/agents/:id         → AdminAgentDetailPage      (lazy — AdminLayout, guarded)
- *   /admin/appeals            → AdminAppealsPage          (lazy — AdminLayout, guarded; resolve gated to SUPER_ADMIN)
+ *   /                 → HomePage            (eager - part of initial bundle)
+ *   /request          → RequestPage         (lazy - own chunk)
+ *   /results/:token   → StatusPage          (lazy - own chunk, public magic link)
+ *   /agent/login              → AgentLoginPage            (lazy - own header, unauthenticated)
+ *   /agent/apply              → AgentApplyPage            (lazy - AgentLayout, guarded)
+ *   /agent/dashboard          → AgentDashboardPage        (lazy - AgentLayout, guarded)
+ *   /admin/login              → AdminLoginPage            (lazy - own header, unauthenticated)
+ *   /admin/verifications      → VerificationsQueuePage    (lazy - AdminLayout, guarded)
+ *   /admin/verifications/:id  → VerificationDetailPage    (lazy - AdminLayout, guarded)
+ *   /admin/agents             → AdminAgentsListPage       (lazy - AdminLayout, guarded)
+ *   /admin/agents/:id         → AdminAgentDetailPage      (lazy - AdminLayout, guarded)
+ *   /admin/appeals            → AdminAppealsPage          (lazy - AdminLayout, guarded; resolve gated to SUPER_ADMIN)
  */
 export function App() {
   return (

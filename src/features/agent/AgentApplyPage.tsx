@@ -11,7 +11,7 @@ import { PROPERTY_TYPES, PROPERTY_TYPE_LABELS } from './constants'
 /**
  * One-time agent profile submission (POST /agents/apply). Photo/video/ID
  * document uploads aren't wired up yet (no file storage configured in this
- * pass) — those fields are optional on the backend, so the form only
+ * pass) - those fields are optional on the backend, so the form only
  * collects what's required plus the two plain-text optional fields.
  */
 export function AgentApplyPage() {
@@ -57,7 +57,7 @@ export function AgentApplyPage() {
       <div className="mb-8">
         <h1 className="font-display text-2xl font-bold text-foreground">Complete Your Agent Profile</h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Submit your details for verification — this is a one-time application. Once verified you&apos;ll start receiving matched leads.
+          Submit your details for verification - this is a one-time application. Once verified you&apos;ll start receiving matched leads.
         </p>
       </div>
 

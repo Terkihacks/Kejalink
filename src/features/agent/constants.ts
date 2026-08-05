@@ -1,6 +1,6 @@
 /**
  * Property type options for the agent apply form's `propertyTypes` field.
- * The API gives no enum for this — its own example payload uses "apartment"
+ * The API gives no enum for this - its own example payload uses "apartment"
  * and "studio", so this list rounds that out with common Kenyan rental
  * categories.
  */

@@ -10,7 +10,7 @@ import { useScrolled } from '@/hooks'
  *
  * - Gains a border + blur shadow once the page scrolls past 8 px
  * - Desktop: inline navigation links
- * - Mobile: slide-over drawer (no Radix, no library dependency — pure CSS transitions)
+ * - Mobile: slide-over drawer (no Radix, no library dependency - pure CSS transitions)
  *
  * Internal routes use React Router `<Link to="…">`.
  * Hash anchors (`#agents`, `#faq`) remain plain `<a>` elements.

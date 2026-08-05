@@ -14,22 +14,22 @@ const FAQS: FaqItem[] = [
   {
     question: 'How does KejaLink work?',
     answer:
-      'Submit your housing request with your preferences — area, budget, house type, and move date. Our platform instantly notifies verified agents in that area who have matching properties. Agents contact you directly via WhatsApp or call, and you can schedule viewings at your convenience.',
+      'Submit your housing request with your preferences - area, budget, house type, and move date. Our platform instantly notifies verified agents in that area who have matching properties. Agents contact you directly via WhatsApp or call, and you can schedule viewings at your convenience.',
   },
   {
     question: 'Is it free for renters?',
     answer:
-      'Yes. KejaLink is completely free for renters. You can submit unlimited requests and connect with as many verified agents as you need — no charges, no hidden fees, ever.',
+      'Yes. KejaLink is completely free for renters. You can submit unlimited requests and connect with as many verified agents as you need - no charges, no hidden fees, ever.',
   },
   {
     question: 'How do agents join KejaLink?',
     answer:
-      "Agents apply through our 'Become an Agent' section. We run a verification process including ID check, business registration review, and previous tenant feedback. Only agents who pass are approved — this protects renters and keeps standards high.",
+      "Agents apply through our 'Become an Agent' section. We run a verification process including ID check, business registration review, and previous tenant feedback. Only agents who pass are approved - this protects renters and keeps standards high.",
   },
   {
     question: 'Are all agents verified?',
     answer:
-      'Absolutely. Every agent on KejaLink has been manually vetted. No unverified agent can contact you. If an agent misbehaves, they are immediately suspended — your safety is our priority.',
+      'Absolutely. Every agent on KejaLink has been manually vetted. No unverified agent can contact you. If an agent misbehaves, they are immediately suspended - your safety is our priority.',
   },
   {
     question: 'How fast will I get a response?',
@@ -39,12 +39,12 @@ const FAQS: FaqItem[] = [
   {
     question: 'What areas does KejaLink cover?',
     answer:
-      'We currently cover Nairobi and its surroundings — including Westlands, Kilimani, Karen, South B, South C, Kasarani, Thika Road, Embakasi, and many more. We\'re actively expanding to Mombasa and Kisumu.',
+      'We currently cover Nairobi and its surroundings - including Westlands, Kilimani, Karen, South B, South C, Kasarani, Thika Road, Embakasi, and many more. We\'re actively expanding to Mombasa and Kisumu.',
   },
 ]
 
 /**
- * FAQ section — collapses all questions into an Accordion component.
+ * FAQ section - collapses all questions into an Accordion component.
  *
  * Uses the custom `Accordion` (no Radix) from `@/components/ui` with
  * `type="single" collapsible` so only one answer is visible at a time.

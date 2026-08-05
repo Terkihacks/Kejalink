@@ -6,7 +6,7 @@ import { clearSession } from '@/lib/auth-storage'
 import { logoutAgent } from '@/services/agentAuth'
 
 /**
- * Slim internal-tool shell for the Agent section — no public Navbar/Footer,
+ * Slim internal-tool shell for the Agent section - no public Navbar/Footer,
  * just a top bar with the logo, the logged-in agent's name, and logout.
  */
 export function AgentLayout() {
@@ -15,7 +15,7 @@ export function AgentLayout() {
 
   const handleLogout = async () => {
     if (session) {
-      // Agent logout has no Authorization-header fallback — refreshToken
+      // Agent logout has no Authorization-header fallback - refreshToken
       // must always be sent in the body.
       await logoutAgent(session.refreshToken).catch(() => {})
     }

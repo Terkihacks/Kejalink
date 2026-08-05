@@ -1,7 +1,7 @@
 /**
  * Session persistence for the three independent auth flows (renter/agent/admin).
  *
- * One localStorage key per session kind — mirrors the read/write pattern
+ * One localStorage key per session kind - mirrors the read/write pattern
  * used by useTheme.ts ('keja-theme'), just applied to a JSON blob instead
  * of a plain string. Separate keys let a renter tab, agent tab, and admin
  * tab coexist in the same browser during dev/testing without clobbering.

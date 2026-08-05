@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 interface SliderProps extends Omit<ComponentProps<'input'>, 'value' | 'defaultValue' | 'onChange' | 'type'> {
   /**
-   * Controlled value — single-element array to match shadcn/Radix Slider API.
+   * Controlled value - single-element array to match shadcn/Radix Slider API.
    * e.g. `[15000]`
    */
   value?: number[]
@@ -58,7 +58,7 @@ export function Slider({
         />
       </div>
 
-      {/* Visual thumb — pointer-events-none, purely decorative */}
+      {/* Visual thumb - pointer-events-none, purely decorative */}
       <div
         className={cn(
           'pointer-events-none absolute top-1/2 h-4 w-4',
@@ -69,7 +69,7 @@ export function Slider({
         style={{ left: `${pct}%` }}
       />
 
-      {/* Native range input — transparent, sits on top, handles all events */}
+      {/* Native range input - transparent, sits on top, handles all events */}
       <input
         {...props}
         type="range"

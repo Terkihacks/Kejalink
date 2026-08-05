@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 
 /**
  * Slim internal-tool shell for the Admin section. There is no
- * POST /auth/admin/logout endpoint in the API — logout here is purely
+ * POST /auth/admin/logout endpoint in the API - logout here is purely
  * client-side (clear the stored session).
  */
 export function AdminLayout() {

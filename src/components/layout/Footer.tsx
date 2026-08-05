@@ -36,7 +36,7 @@ export function Footer() {
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Kenya&apos;s verified rental marketplace. Connect with trusted agents and find your
-              perfect home — faster than ever.
+              perfect home - faster than ever.
             </p>
           </div>
 

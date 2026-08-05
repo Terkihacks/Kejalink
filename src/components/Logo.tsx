@@ -17,7 +17,7 @@ interface LogoProps {
 }
 
 /**
- * Icon mark only — the house with interlinked chain rings and cyan roof node.
+ * Icon mark only - the house with interlinked chain rings and cyan roof node.
  * Use in compact spaces: navbars, favicons, mobile headers.
  */
 export function KejaLinkIcon({ size = 32, className = '' }: LogoProps) {
@@ -35,13 +35,13 @@ export function KejaLinkIcon({ size = 32, className = '' }: LogoProps) {
       <path d="M24 2L1 20H6.5V46H41.5V20H47L24 2Z" fill="#00CE92" />
       {/* Door background */}
       <rect x="14.5" y="27" width="19" height="19" rx="2" fill="#0A0F1E" />
-      {/* Chain link rings — interlocked effect */}
+      {/* Chain link rings - interlocked effect */}
       <circle cx="30.5" cy="36.5" r="7.5" fill="none" stroke="#00CE92" strokeWidth="2.5" />
       <rect x="23" y="36.5" width="8.5" height="8" fill="#0A0F1E" />
       <circle cx="17.5" cy="36.5" r="7.5" fill="none" stroke="#00CE92" strokeWidth="2.5" />
       <rect x="23" y="28.5" width="8.5" height="8" fill="#0A0F1E" />
       <path d="M23,28.7 A7.5,7.5,0,0,1,23,44.3" fill="none" stroke="#00CE92" strokeWidth="2.5" />
-      {/* Roof peak node — signals digital connectivity */}
+      {/* Roof peak node - signals digital connectivity */}
       <circle cx="24" cy="2" r="3" fill="#00E5FF" />
       <circle cx="24" cy="2" r="1.5" fill="#FFFFFF" />
       {/* Eave highlight */}
@@ -51,7 +51,7 @@ export function KejaLinkIcon({ size = 32, className = '' }: LogoProps) {
 }
 
 /**
- * Full wordmark — icon mark + "Keja" (white) + "Link" (green) logotype.
+ * Full wordmark - icon mark + "Keja" (white) + "Link" (green) logotype.
  * Use in navigation headers and marketing materials where space allows.
  */
 export function KejaLinkWordmark({ className = '' }: Pick<LogoProps, 'className'>) {

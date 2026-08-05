@@ -1,7 +1,7 @@
 /** Nairobi neighbourhoods available for renter area selection. */
 export { AREAS } from '@/lib/constants'
 
-/** House type options — id maps to the API's numeric `bedrooms` field at submit time. */
+/** House type options - id maps to the API's numeric `bedrooms` field at submit time. */
 export const HOUSE_TYPES = [
   { id: 'bedsitter', label: 'Bedsitter',  sub: 'Self-contained single room' },
   { id: '1br',       label: '1 Bedroom',  sub: 'Bedroom + separate living room' },
@@ -15,7 +15,7 @@ export const BEDROOMS_BY_HOUSE_TYPE: Record<string, number> = {
   '2br':     2,
 }
 
-/** Move-urgency options — id is the exact RequestTimeline enum value the API expects. */
+/** Move-urgency options - id is the exact RequestTimeline enum value the API expects. */
 export const MOVE_TIMELINES = [
   { id: 'ASAP',            label: 'As Soon As Possible' },
   { id: 'WITHIN_1_MONTH',  label: 'Within a Month'      },

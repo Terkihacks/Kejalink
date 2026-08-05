@@ -6,7 +6,7 @@ const MOBILE_BREAKPOINT = 768
 /**
  * Returns `true` when the viewport width is below {@link MOBILE_BREAKPOINT} (768 px).
  *
- * Uses `window.matchMedia` for efficient, paint-free listening — no polling.
+ * Uses `window.matchMedia` for efficient, paint-free listening - no polling.
  * Initialises synchronously on mount to avoid a flash of incorrect layout.
  */
 export function useIsMobile(): boolean {
