@@ -20,24 +20,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Loaded non-render-blocking: the browser fetches this stylesheet at low
-      priority (media="print" doesn't match screen, so it doesn't block first
-      paint) then swaps it to "all" once loaded. font-display: swap on the
-      Google Fonts side means text still renders immediately in a fallback
-      font either way — this just stops the fetch itself from gating render.
+      Deliberately render-blocking (not the media="print"/onload deferred-swap
+      trick): this app is client-rendered, so the JS bundle is already doing
+      heavy hydration work shortly after first paint. Deferring the font CSS
+      meant it finished loading *during* that hydration window, and applying
+      it there forced a page-wide style/layout recalc (font metrics changing)
+      right on top of an already-busy main thread — measured as a ~1.1s Style
+      & Layout main-thread task and 670ms Total Blocking Time. Blocking here
+      costs ~650ms of render delay but keeps the font swap off the hydration
+      critical path, which is the better trade for this specific app shape.
     -->
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
       rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
     />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
 
     <title>KejaLink — Find a House Without Stress</title>
 
