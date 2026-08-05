@@ -19,10 +19,25 @@
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Loaded non-render-blocking: the browser fetches this stylesheet at low
+      priority (media="print" doesn't match screen, so it doesn't block first
+      paint) then swaps it to "all" once loaded. font-display: swap on the
+      Google Fonts side means text still renders immediately in a fallback
+      font either way — this just stops the fetch itself from gating render.
+    -->
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <title>KejaLink — Find a House Without Stress</title>
 
@@ -39,12 +54,12 @@
         }
       })()
     </script>
-    <script type="module" crossorigin src="/assets/index-pSsC92O6.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/router-QOPz9NBM.js">
-    <link rel="modulepreload" crossorigin href="/assets/query-C19bfhOR.js">
-    <link rel="modulepreload" crossorigin href="/assets/icons-BjniDGsG.js">
-    <link rel="modulepreload" crossorigin href="/assets/motion-9s4Bgb1S.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-gOwMcjps.css">
+    <script type="module" crossorigin src="/assets/index-C0kvJvlE.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/router-D0-mjpMK.js">
+    <link rel="modulepreload" crossorigin href="/assets/query-rndI1K9R.js">
+    <link rel="modulepreload" crossorigin href="/assets/icons-gM0qVjIW.js">
+    <link rel="modulepreload" crossorigin href="/assets/motion-D-TuTCI-.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DRUI_mry.css">
   </head>
   <body>
     <div id="root"></div>

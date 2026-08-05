@@ -1,0 +1,2 @@
+const s=[{id:"bedsitter",label:"Bedsitter",sub:"Self-contained single room"},{id:"1br",label:"1 Bedroom",sub:"Bedroom + separate living room"},{id:"2br",label:"2 Bedroom",sub:"Two bedrooms + living room"}],o={bedsitter:0,"1br":1,"2br":2},e=[{id:"ASAP",label:"As Soon As Possible"},{id:"WITHIN_1_MONTH",label:"Within a Month"},{id:"WITHIN_3_MONTHS",label:"Within 3 Months"}],t=5,a=5e3,i=1e5,T=1e3,n=1e4,b=25e3;export{n as B,s as H,e as M,t as T,b as a,T as b,o as c,i as d,a as e};
+//# sourceMappingURL=constants-DsH8ueWL.js.map
