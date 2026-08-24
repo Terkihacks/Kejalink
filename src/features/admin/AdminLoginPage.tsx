@@ -26,7 +26,7 @@ export function AdminLoginPage() {
     login.mutate({ email, password }, {
       onSuccess: result => {
         setSessionId(result.sessionId)
-        setDevOtpHint(result.otpCode ?? null)
+        setDevOtpHint(import.meta.env.DEV ? (result.otpCode ?? null) : null)
         setPhase('totp')
       },
     })

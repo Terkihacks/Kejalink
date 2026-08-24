@@ -8,7 +8,11 @@ import type { AuthUser } from '@/lib/auth-storage'
 export interface AdminLoginResult {
   sessionId:   string
   requires2fa: boolean
-  /** Only present as a dev/bootstrap convenience before TOTP has been configured. */
+  /**
+   * Only present as a dev/bootstrap convenience before TOTP has been configured.
+   * The frontend only surfaces this in import.meta.env.DEV (see AdminLoginPage) -
+   * displaying it in prod would let a password alone bypass the second factor.
+   */
   otpCode?:    string
 }
 
