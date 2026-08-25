@@ -6,10 +6,11 @@ import { useVerificationDetail, useApproveVerification, useRejectVerification } 
 import { getErrorMessage } from '@/lib/error-messages'
 
 const CHECKLIST_ITEMS = [
-  { key: 'isIdReadable',        label: 'ID document is clear and readable' },
-  { key: 'isFaceMatching',      label: 'Face in liveness video matches ID photo' },
-  { key: 'isLivenessConfirmed', label: 'Liveness check confirmed (not a photo/video replay)' },
-  { key: 'isEcitizenVerified',  label: 'eCitizen ID number verified' },
+  { key: 'isIdReadable',        label: 'ID document is clear and readable',                     required: true },
+  { key: 'isFaceMatching',      label: 'Face in liveness video matches ID photo',                required: true },
+  { key: 'isLivenessConfirmed', label: 'Liveness check confirmed (not a photo/video replay)',    required: true },
+  { key: 'isEcitizenVerified',  label: 'eCitizen ID number verified',                            required: true },
+  { key: 'isSocialMediaValid',  label: 'Social media presence verified (optional)',              required: false },
 ] as const
 
 export function VerificationDetailPage() {
@@ -24,7 +25,7 @@ export function VerificationDetailPage() {
   const [showReject, setShowReject] = useState(false)
 
   const allChecked = useMemo(
-    () => CHECKLIST_ITEMS.every(item => checklist[item.key] === true),
+    () => CHECKLIST_ITEMS.filter(item => item.required).every(item => checklist[item.key] === true),
     [checklist],
   )
 
@@ -43,7 +44,13 @@ export function VerificationDetailPage() {
   const handleApprove = () => {
     if (!agentId || !allChecked) return
     approve.mutate(
-      { agentId, checklist: { isIdReadable: true, isFaceMatching: true, isLivenessConfirmed: true, isEcitizenVerified: true } },
+      {
+        agentId,
+        checklist: {
+          isIdReadable: true, isFaceMatching: true, isLivenessConfirmed: true, isEcitizenVerified: true,
+          ...(checklist.isSocialMediaValid ? { isSocialMediaValid: true } : {}),
+        },
+      },
       { onSuccess: () => navigate('/admin/verifications') },
     )
   }

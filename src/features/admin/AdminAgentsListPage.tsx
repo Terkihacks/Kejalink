@@ -1,24 +1,24 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, ChevronRight } from 'lucide-react'
-import { Input } from '@/components/ui'
+import { Input, Badge, type BadgeProps } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import { useAdminAgents } from '@/hooks'
 import type { VerificationStatus, AccountStatus } from '@/features/agent/types'
 
 const VERIFICATION_FILTERS: (VerificationStatus | 'ALL')[] = ['ALL', 'PENDING', 'UNDER_REVIEW', 'VERIFIED', 'REJECTED']
 
-const STATUS_BADGE: Record<VerificationStatus, string> = {
-  PENDING:      'border-gold/30 bg-gold/15 text-gold',
-  UNDER_REVIEW: 'border-gold/30 bg-gold/15 text-gold',
-  VERIFIED:     'border-primary/30 bg-primary/15 text-primary',
-  REJECTED:     'border-destructive/30 bg-destructive/15 text-destructive',
+const STATUS_TONE: Record<VerificationStatus, BadgeProps['tone']> = {
+  PENDING:      'warning',
+  UNDER_REVIEW: 'warning',
+  VERIFIED:     'success',
+  REJECTED:     'danger',
 }
 
-const ACCOUNT_BADGE: Record<AccountStatus, string> = {
-  ACTIVE:      'border-primary/30 bg-primary/15 text-primary',
-  SUSPENDED:   'border-destructive/30 bg-destructive/15 text-destructive',
-  DEACTIVATED: 'border-border/60 bg-muted/60 text-muted-foreground',
+const ACCOUNT_TONE: Record<AccountStatus, BadgeProps['tone']> = {
+  ACTIVE:      'success',
+  SUSPENDED:   'danger',
+  DEACTIVATED: 'neutral',
 }
 
 export function AdminAgentsListPage() {
@@ -82,12 +82,8 @@ export function AdminAgentsListPage() {
                 <p className="font-semibold text-foreground">{agent.name}</p>
                 <p className="text-sm text-muted-foreground">{agent.phone}</p>
                 <div className="mt-2 flex gap-2">
-                  <span className={cn('rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide', STATUS_BADGE[agent.verificationStatus])}>
-                    {agent.verificationStatus.replace('_', ' ')}
-                  </span>
-                  <span className={cn('rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide', ACCOUNT_BADGE[agent.accountStatus])}>
-                    {agent.accountStatus}
-                  </span>
+                  <Badge tone={STATUS_TONE[agent.verificationStatus]}>{agent.verificationStatus.replace('_', ' ')}</Badge>
+                  <Badge tone={ACCOUNT_TONE[agent.accountStatus]}>{agent.accountStatus}</Badge>
                 </div>
               </div>
               <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.5} />

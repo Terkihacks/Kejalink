@@ -1,4 +1,5 @@
 import type { VerificationStatus, AccountStatus } from '@/features/agent/types'
+import type { RequestResult, RequestStatus } from '@/types'
 
 export type AppealResolution = 'UNSUSPENDED' | 'DISMISSED' | 'DEACTIVATED'
 
@@ -97,4 +98,68 @@ export interface AgentStatusSummary {
   name:                string
   verificationStatus?: VerificationStatus
   accountStatus?:      AccountStatus
+}
+
+/* ─── Dashboard stats ────────────────────────────────────────────── */
+
+/** GET /admin/stats */
+export interface AdminStats {
+  agents: {
+    total:               number
+    verified:            number
+    suspended:           number
+    pendingVerification: number
+  }
+  renters:  { total: number }
+  admins:   { total: number }
+  requests: { active: number; pendingSupply: number }
+  appeals:  { pending: number }
+}
+
+/* ─── Request oversight ──────────────────────────────────────────── */
+
+/** GET /admin/requests item - RequestResult plus the owning renter. */
+export interface AdminRequestListItem extends RequestResult {
+  renter: { id: string; name: string; phone: string }
+}
+
+export interface AdminRequestListParams {
+  status?: RequestStatus
+  area?:   string
+}
+
+/* ─── Admin account management ───────────────────────────────────── */
+
+/** GET /admin/admins item */
+export interface AdminAccountListItem {
+  id:          string
+  email:       string
+  lastLoginAt: string | null
+  createdAt:   string
+  user: {
+    id:       string
+    name:     string | null
+    role:     'ADMIN' | 'SUPER_ADMIN'
+    isActive: boolean
+  }
+}
+
+/* ─── Audit log ───────────────────────────────────────────────────── */
+
+/** GET /admin/audit-logs item */
+export interface AuditLogEntry {
+  id:         string
+  action:     string
+  targetType: string
+  targetId:   string
+  metadata:   Record<string, unknown> | null
+  createdAt:  string
+  actor: { id: string; name: string | null; role: string }
+}
+
+export interface AuditLogListParams {
+  action?:     string
+  targetType?: string
+  /** 1-200, default 50 per API. */
+  limit?:      number
 }

@@ -7,6 +7,8 @@ import { api, isMockMode } from '@/lib/api'
 import type {
   AdminAgentListItem, AdminAgentDetail, AdminAgentListParams, AdminSuspension,
   VerificationQueueItem, VerificationApproveInput, AppealResolution, AgentStatusSummary,
+  AdminStats, AdminRequestListItem, AdminRequestListParams, AdminAccountListItem,
+  AuditLogEntry, AuditLogListParams,
 } from '@/features/admin/types'
 
 function delay<T>(value: T, ms = 500): Promise<T> {
@@ -55,6 +57,38 @@ const MOCK_VERIFICATION_QUEUE: VerificationQueueItem[] = [
 ]
 
 let mockSuspensions: AdminSuspension[] = []
+
+let mockAdmins: AdminAccountListItem[] = [
+  {
+    id: 'mock-admin-001', email: 'admin@kejalink.co.ke', lastLoginAt: new Date().toISOString(), createdAt: new Date().toISOString(),
+    user: { id: 'mock-admin-001', name: 'Mock Admin', role: 'SUPER_ADMIN', isActive: true },
+  },
+]
+
+const MOCK_STATS: AdminStats = {
+  agents:   { total: 2, verified: 1, suspended: 0, pendingVerification: 1 },
+  renters:  { total: 5 },
+  admins:   { total: 1 },
+  requests: { active: 3, pendingSupply: 1 },
+  appeals:  { pending: 0 },
+}
+
+const MOCK_REQUESTS: AdminRequestListItem[] = [
+  {
+    id: 'mock-request-001', area: 'Kilimani', budgetMin: 20000, budgetMax: 35000, bedrooms: 2,
+    timeline: 'ASAP', status: 'MATCHED', matchedAgentCount: 2,
+    expiresAt: new Date(Date.now() + 86400000).toISOString(), createdAt: new Date().toISOString(),
+    matches: [], renter: { id: 'mock-renter-001', name: 'Alice Wanjiru', phone: '254733333333' },
+  },
+]
+
+const MOCK_AUDIT_LOG: AuditLogEntry[] = [
+  {
+    id: 'mock-audit-001', action: 'AGENT_VERIFIED', targetType: 'AGENT', targetId: 'mock-agent-001',
+    metadata: { reviewedVia: 'checklist' }, createdAt: new Date().toISOString(),
+    actor: { id: 'mock-admin-001', name: 'Mock Admin', role: 'SUPER_ADMIN' },
+  },
+]
 
 /* ─── Agents ─────────────────────────────────────────────────────── */
 
@@ -142,6 +176,41 @@ export async function rejectVerification(agentId: string, reason: string): Promi
 /* ─── Super-admin bootstrap ──────────────────────────────────────── */
 
 export async function createAdmin(input: { email: string; password: string; name?: string }): Promise<{ id: string; email: string; name: string | null; role: 'ADMIN' }> {
-  if (isMockMode) return delay({ id: 'mock-admin-new', email: input.email, name: input.name ?? null, role: 'ADMIN' })
+  if (isMockMode) {
+    const result = { id: `mock-admin-${mockAdmins.length + 1}`, email: input.email, name: input.name ?? null, role: 'ADMIN' as const }
+    mockAdmins = [...mockAdmins, {
+      id: result.id, email: result.email, lastLoginAt: null, createdAt: new Date().toISOString(),
+      user: { id: result.id, name: result.name, role: 'ADMIN', isActive: true },
+    }]
+    return delay(result)
+  }
   return api.post<{ id: string; email: string; name: string | null; role: 'ADMIN' }>('/admin/admins', input, 'admin')
+}
+
+export async function listAdmins(): Promise<AdminAccountListItem[]> {
+  if (isMockMode) return delay(mockAdmins)
+  return api.get<AdminAccountListItem[]>('/admin/admins', 'admin')
+}
+
+/* ─── Dashboard stats ────────────────────────────────────────────── */
+
+export async function getAdminStats(): Promise<AdminStats> {
+  if (isMockMode) return delay(MOCK_STATS)
+  return api.get<AdminStats>('/admin/stats', 'admin')
+}
+
+/* ─── Request oversight ──────────────────────────────────────────── */
+
+export async function listAdminRequests(params: AdminRequestListParams = {}): Promise<AdminRequestListItem[]> {
+  if (isMockMode) return delay(MOCK_REQUESTS)
+  const qs = query({ status: params.status, area: params.area })
+  return api.get<AdminRequestListItem[]>(`/admin/requests${qs}`, 'admin')
+}
+
+/* ─── Audit log ───────────────────────────────────────────────────── */
+
+export async function listAuditLog(params: AuditLogListParams = {}): Promise<AuditLogEntry[]> {
+  if (isMockMode) return delay(MOCK_AUDIT_LOG)
+  const qs = query({ action: params.action, targetType: params.targetType, limit: params.limit?.toString() })
+  return api.get<AuditLogEntry[]>(`/admin/audit-logs${qs}`, 'admin')
 }

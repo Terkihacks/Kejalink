@@ -50,9 +50,16 @@ export async function verifyAdmin2fa(sessionId: string, code: string): Promise<V
 }
 
 export async function setupAdmin2fa(email: string): Promise<Setup2faResult> {
+  if (isMockMode) {
+    return delay({
+      secret: 'MOCKSECRETBASE32',
+      qrCodeUri: `otpauth://totp/KejaLink:${email}?secret=MOCKSECRETBASE32&issuer=KejaLink`,
+    })
+  }
   return api.post<Setup2faResult>('/auth/admin/setup-2fa', { email }, 'admin')
 }
 
 export async function disableAdmin2fa(): Promise<{ message: string }> {
+  if (isMockMode) return delay({ message: '2FA disabled successfully' })
   return api.post<{ message: string }>('/auth/admin/disable-2fa', {}, 'admin')
 }

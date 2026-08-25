@@ -56,6 +56,21 @@ const AdminAgentDetailPage = lazy(() =>
 const AdminAppealsPage = lazy(() =>
   import('@/features/admin').then(m => ({ default: m.AdminAppealsPage })),
 )
+const AdminDashboardPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminDashboardPage })),
+)
+const AdminRequestsPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminRequestsPage })),
+)
+const AdminAuditLogPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminAuditLogPage })),
+)
+const AdminManagementPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminManagementPage })),
+)
+const AdminSettingsPage = lazy(() =>
+  import('@/features/admin').then(m => ({ default: m.AdminSettingsPage })),
+)
 
 const DOT_DELAYS = [0, 0.15, 0.3]
 
@@ -110,6 +125,11 @@ function RootLayout() {
  *   /admin/agents             → AdminAgentsListPage       (lazy - AdminLayout, guarded)
  *   /admin/agents/:id         → AdminAgentDetailPage      (lazy - AdminLayout, guarded)
  *   /admin/appeals            → AdminAppealsPage          (lazy - AdminLayout, guarded; resolve gated to SUPER_ADMIN)
+ *   /admin                    → AdminDashboardPage        (lazy - AdminLayout, guarded)
+ *   /admin/requests           → AdminRequestsPage         (lazy - AdminLayout, guarded)
+ *   /admin/audit-logs         → AdminAuditLogPage         (lazy - AdminLayout, guarded)
+ *   /admin/management         → AdminManagementPage       (lazy - AdminLayout, guarded, roles=[SUPER_ADMIN])
+ *   /admin/settings           → AdminSettingsPage         (lazy - AdminLayout, guarded)
  */
 export function App() {
   return (
@@ -183,6 +203,14 @@ export function App() {
             }
           >
             <Route
+              path="/admin"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminDashboardPage />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="/admin/verifications"
               element={
                 <RequireAuth kind="admin">
@@ -219,6 +247,38 @@ export function App() {
               element={
                 <RequireAuth kind="admin">
                   <AdminAppealsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/requests"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminRequestsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/audit-logs"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminAuditLogPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/management"
+              element={
+                <RequireAuth kind="admin" roles={['SUPER_ADMIN']}>
+                  <AdminManagementPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/settings"
+              element={
+                <RequireAuth kind="admin">
+                  <AdminSettingsPage />
                 </RequireAuth>
               }
             />

@@ -40,7 +40,7 @@ export function AdminLoginPage() {
           refreshToken: result.refreshToken,
           user:         result.user,
         })
-        navigate('/admin/verifications')
+        navigate('/admin')
       },
     })
   }, [verify2fa, sessionId, totpCode, navigate])

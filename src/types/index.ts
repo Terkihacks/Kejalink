@@ -9,7 +9,7 @@
 
 export type RequestTimeline = 'ASAP' | 'WITHIN_1_MONTH' | 'WITHIN_3_MONTHS'
 
-export type RequestStatus = 'MATCHED' | 'PENDING_SUPPLY' | 'CLOSED' | 'CANCELLED' | 'EXPIRED'
+export type RequestStatus = 'OPEN' | 'MATCHED' | 'PENDING_SUPPLY' | 'PENDING_REMATCH' | 'CLOSED' | 'CANCELLED' | 'EXPIRED'
 
 export type MatchStatus = 'NOTIFIED' | 'ACCEPTED' | 'DECLINED' | 'EXPIRED'
 
@@ -60,4 +60,20 @@ export interface RequestResult {
   createdAt:         string
   magicLink?:        string
   matches:           RequestMatch[]
+}
+
+/* ─── Notifications ──────────────────────────────────────────────── */
+
+/** Named `AppNotification` to avoid shadowing the DOM `Notification` global. */
+export interface AppNotification {
+  id:            string
+  recipientId:   string
+  type:          string
+  title:         string
+  body:          string
+  referenceId:   string | null
+  referenceType: string | null
+  isRead:        boolean
+  readAt:        string | null
+  createdAt:     string
 }

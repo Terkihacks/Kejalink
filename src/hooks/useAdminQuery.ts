@@ -3,14 +3,22 @@ import {
   listAgents, getAgent, suspendAgent, unsuspendAgent,
   listAppeals, escalateAppeal, resolveAppeal,
   listVerifications, getVerification, approveVerification, rejectVerification,
+  getAdminStats, listAdminRequests, listAdmins, createAdmin, listAuditLog,
 } from '@/services/admin'
-import type { AdminAgentListParams, VerificationApproveInput, AppealResolution } from '@/features/admin/types'
+import type {
+  AdminAgentListParams, VerificationApproveInput, AppealResolution,
+  AdminRequestListParams, AuditLogListParams,
+} from '@/features/admin/types'
 
 const AGENTS_KEY = ['admin-agents']
 const AGENT_KEY = (id: string) => ['admin-agent', id]
 const APPEALS_KEY = ['admin-appeals']
 const VERIFICATIONS_KEY = ['admin-verifications']
 const VERIFICATION_KEY = (agentId: string) => ['admin-verification', agentId]
+const STATS_KEY = ['admin-stats']
+const REQUESTS_KEY = ['admin-requests']
+const ADMINS_KEY = ['admin-admins']
+const AUDIT_LOG_KEY = ['admin-audit-log']
 
 export function useAdminAgents(params: AdminAgentListParams = {}) {
   return useQuery({
@@ -102,5 +110,39 @@ export function useRejectVerification() {
       queryClient.invalidateQueries({ queryKey: AGENTS_KEY })
       queryClient.invalidateQueries({ queryKey: VERIFICATION_KEY(agentId) })
     },
+  })
+}
+
+export function useAdminStats() {
+  return useQuery({
+    queryKey: STATS_KEY,
+    queryFn:  getAdminStats,
+    refetchInterval: 30_000,
+  })
+}
+
+export function useAdminRequests(params: AdminRequestListParams = {}) {
+  return useQuery({
+    queryKey: [...REQUESTS_KEY, params],
+    queryFn:  () => listAdminRequests(params),
+  })
+}
+
+export function useAdmins() {
+  return useQuery({ queryKey: ADMINS_KEY, queryFn: listAdmins })
+}
+
+export function useCreateAdmin() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { email: string; password: string; name?: string }) => createAdmin(input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMINS_KEY }),
+  })
+}
+
+export function useAuditLog(params: AuditLogListParams = {}) {
+  return useQuery({
+    queryKey: [...AUDIT_LOG_KEY, params],
+    queryFn:  () => listAuditLog(params),
   })
 }
